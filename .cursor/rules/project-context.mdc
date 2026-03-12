@@ -1,0 +1,91 @@
+---
+description: stock-overnight-log 프로젝트 컨텍스트
+alwaysApply: true
+---
+
+# stock-overnight-log 프로젝트 컨텍스트
+
+## 프로젝트 개요
+
+- **서비스**: 국내 주식 매매일지 (시간외 단일가 매수 후 익일 매도 전략 기록)
+- **제품 원칙**: 모바일 우선(Mobile First). 데스크톱은 확장 대응
+- **스택**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Zustand, TanStack Query, Supabase, Radix UI
+- **Path alias**: `@/*` → 프로젝트 루트 (tsconfig paths)
+
+## UI/UX 우선순위
+
+- 모든 화면은 기본적으로 모바일 viewport(약 360~430px)에서 먼저 설계
+- Tailwind는 기본 클래스를 모바일 기준으로 작성하고, `sm`, `md`, `lg`는 점진적 확장으로만 사용
+- 입력/버튼/터치 영역은 모바일 터치 친화 크기(최소 44px) 우선
+- 데이터 카드/리스트는 모바일에서 세로 흐름을 기본으로 구성하고 데스크톱에서만 다단 확장
+- 성능 최적화(초기 렌더, 네트워크 요청 수, 번들 크기)는 모바일 네트워크 환경 기준으로 판단
+
+## 디렉토리 구조 (루트 FSD + Application)
+
+- **app/** – App Router 라우트, 레이아웃, 전역 스타일
+- **application/** – 앱 전역 조합 레이어 (예: `application/providers`)
+- **views/** – 라우트 단위 화면 조립 레이어 (FSD pages 대체)
+- **widgets/** – 여러 view에서 재사용 가능한 UI 블록
+- **features/** – 사용자 액션 단위 기능 (예: 매매일/종목 입력, 조회, 저장)
+- **entities/** – 도메인 모델/타입/비즈니스 표현 (예: trading-log)
+- **shared/** – 공통 UI, 유틸, 범용 API helper/클라이언트
+
+### FSD 레이어 의존 방향
+
+상위 레이어는 하위 레이어만 참조 가능. 역방향 의존 금지.
+
+`app → application → views → widgets → features → entities → shared`
+
+- application은 앱 전역 조립(Provider/Bootstrap) 목적. page 단위 UI 로직은 두지 않음
+- views는 widgets, features, entities, shared를 import 가능
+- widgets는 features, entities, shared를 import 가능
+- features는 entities, shared를 import 가능. 다른 features를 직접 import 불가
+- entities는 shared를 import 가능. **entities 간 직접 import는 원칙적으로 금지**
+- 정말 특별한 케이스에서만 entities 간 import를 허용하고, 그 경우 이유를 코드/PR에 명시
+- shared는 어디서든 import 가능
+
+## 네이밍 컨벤션
+
+- 컴포넌트: PascalCase. 폴더 및 파일은 kebab-case
+- 이벤트 핸들러 함수: `handle` 접두사 (예: `handleSubmit`)
+- 이벤트 핸들러 prop: `on` 접두사 (예: `onClick`)
+- boolean 변수: `is`, `has`, `can` 등 접두사 사용
+
+### export 네이밍 스코프 규칙
+
+- **shared 레벨** (여러 곳에서 import): 파일명과 동일한 **풀네임** 사용
+- **슬라이스 내부 레벨** (해당 슬라이스에서만 사용): **짧은 이름** 허용
+
+## 코딩 패턴
+
+- 상태/로직은 가능한 `model/`에 두고, `ui/`는 표현에 집중
+- 루트(`/`) 페이지는 `views/home/home.tsx`를 기본 진입 view로 사용
+- view 네이밍은 `views/[route]/[route].tsx` + `views/[route]/index.ts` 배럴 export를 기본 규칙으로 사용
+- feature 컴포넌트는 `features/[domain]/[domain].tsx`를 컨테이너 진입점으로 사용
+- feature 외부 노출은 `features/[domain]/index.ts` 배럴 export 우선
+- `features/[domain]/ui/*`는 props 기반 순수 렌더링만 담당 (side effect/비즈니스 로직 금지)
+- 클라이언트 컴포넌트만 `"use client"` 사용
+- 서버 연산/데이터 접근은 App Router 규칙에 맞춰 분리
+- 반응형 구현 시 모바일 기본 스타일을 먼저 완성한 뒤 breakpoint를 추가
+- 전역 Provider는 `application/providers`에서 조합 후 `app/layout.tsx`에서 단일 진입으로 연결
+- 도메인 API는 `shared/api/*`보다 `entities/[domain]/api.ts`에 우선 배치
+
+## import 규칙 (ESLint import/order)
+
+- 순서: builtin → external → internal → parent → sibling → index
+- internal 그룹은 `@/app`, `@/application`, `@/widgets`, `@/views`, `@/features`, `@/entities`, `@/shared`
+- `import/order`는 **warn** 레벨 유지 (개발 중 자동 정렬 권장)
+- 중복 import 금지, import는 파일 상단에만
+- `entities` 교차 import 금지는 ESLint `eslint-plugin-boundaries`로 강제
+- 도메인이 더 늘어나면 `eslint-plugin-boundaries` 규칙을 확장해 app/views/widgets/features/entities/shared 전체 의존 방향까지 중앙 관리
+
+## 타입 위치
+
+- 전역 `d.ts`에 타입을 누적하지 않고, 타입은 가능한 **도메인 `model/types.ts`에 귀속**
+- 공통 타입이 필요할 때도 먼저 `shared` 또는 각 레이어의 명시 import 가능한 파일로 관리
+
+## 현재 도메인 기준
+
+- 핵심 테이블: `trading_logs`
+- 기본 필드: `trade_date`, `stock_name`, `buy_price`, `next_high`, `next_low`, `next_close`, `created_at`
+- 기본 사용자 흐름: 날짜/종목 입력 → 조회 → 저장 → 하단 리스트 렌더링

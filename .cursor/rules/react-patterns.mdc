@@ -1,0 +1,56 @@
+---
+description: React hooks와 상태 관리 패턴 (Zustand, TanStack Query)
+globs: '**/*.tsx,**/model/*.ts'
+alwaysApply: false
+---
+
+# React 패턴
+
+## 상태 관리
+
+### Zustand Store
+
+- Selector 패턴 사용: `useStore((s) => s.value)` 형태로 필요한 값만 선택
+- Store 초기화는 `init*` 함수로 분리
+
+### TanStack Query
+
+- **factory** (`entities/[domain]/model/factory.ts`)
+- `queryOptions`, `mutationOptions`로 query·mutation을 정의·구성
+- Query key는 factory에서 관리 (`[domain].all()` 기반으로 구성)
+- 컴포넌트에서는 factory에서 가져온 옵션을 `useQuery`, `useMutation`에 전달해 사용
+- 전역 Query Provider는 `application/providers`에서 조합해 `app/layout.tsx`에 연결
+- QueryClient는 Provider 내부 `useState(() => new QueryClient(...))` 패턴으로 안정적으로 1회 생성
+
+### Custom Hooks
+
+- 비즈니스 로직은 custom hook으로 분리
+- `useMemo`, `useCallback`으로 최적화
+- 의존성 배열 정확히 명시
+
+### 컴포넌트 내부 선언 순서
+
+- `useState` → custom hooks(`useStore`, `useQuery` 등) → `useRef` → `useMemo` → `useCallback` → event handlers(`handle*`) → `useEffect` → `useLayoutEffect` → `return`
+
+## 컴포넌트 구조
+
+- feature 루트는 컨테이너 컴포넌트(`features/[domain]/[domain].tsx`)를 두고 로직/조합을 담당
+- view/widget/page에서 feature를 사용할 때는 가능하면 `features/[domain]/index.ts` 배럴 export를 통해 import
+- 라우트 단위 화면 조립은 `views/`에서 담당하고, `widgets/`는 재사용 블록 중심으로 유지
+- view 네이밍은 `views/[route]/[route].tsx`를 기본으로 하고, 외부 노출은 `views/[route]/index.ts` 배럴 export 사용
+- UI 컴포넌트는 `ui/` 폴더에 분리
+- Props 타입은 컴포넌트 위에 정의
+- 앱 전역 조립(Provider, bootstrap)은 `application/`에 배치하고, `shared/`는 범용 모듈 중심으로 유지
+
+### UI 컴포넌트 원칙
+
+- `ui/` 폴더 내 컴포넌트는 **순수 렌더링 컴포넌트**
+- 외부에서 props로 데이터를 주입받아 렌더링만 담당
+- query/store/theme/localStorage/side effect 로직은 feature 루트(또는 model hook)에 두고 `ui`에는 두지 않음
+- 상위 feature/widget 등에서 비즈니스 로직 처리 후 UI에 전달
+
+## 스타일링
+
+- Tailwind CSS 사용. `cn()` 유틸리티로 조건부 클래스 결합
+- `eastar-design-system` 컴포넌트 우선 사용
+- `variants()` 함수로 타이포그래피 스타일 적용
