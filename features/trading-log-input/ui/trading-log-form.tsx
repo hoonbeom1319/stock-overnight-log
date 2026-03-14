@@ -2,9 +2,7 @@
 
 import { FormEvent } from 'react';
 
-import { PricePreview } from '@/features/trading-log-input/model/types';
-
-import { type StockSuggestion } from '@/entities/trading-log/model/types';
+import { type MarketPricePreview, type StockSuggestion } from '@/entities/trading-log/model/types';
 
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
@@ -14,7 +12,7 @@ import { Label } from '@/shared/ui/label';
 interface TradingLogFormProps {
     tradeDate: string;
     stockName: string;
-    preview: PricePreview | null;
+    preview: MarketPricePreview | null;
     isDark: boolean;
     canSearch: boolean;
     isFetching: boolean;
