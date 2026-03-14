@@ -33,6 +33,10 @@ export type CreateTradingLogParams = {
     nextClose: number;
 };
 
+export type DeleteTradingLogParams = {
+    id: string;
+};
+
 export type StockSuggestion = {
     code: string;
     name: string;

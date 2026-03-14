@@ -155,6 +155,17 @@ using (auth.uid() = user_id);
 > 중요: 위 설정은 Supabase Auth 로그인 전제입니다.  
 > 즉, 앱에서 로그인되지 않은 상태에서는 `insert/select`가 실패하는 것이 정상입니다.
 
+### 6) 종목명 별칭 테이블(선택, 권장)
+
+`stock_master` 누락 종목(예: `125490`)을 보완하려면 SQL Editor에서 `supabase/stock-aliases.sql` 내용을 실행하세요.
+
+- 사용처
+    - 종목 자동완성(`/api/stock-suggestions`) 우선 검색
+    - 저장된 매매기록 표시명 보정(`stock_display_name`)
+- 권장 운영 방식
+    - 기본은 `stock_master` 기준
+    - 누락/예외 종목만 `stock_aliases`에 수동 보강
+
 ## 현재 구현 상태
 
 - 날짜 + 종목명 입력 후 조회 UI 제공

@@ -14,7 +14,6 @@ import { useTradingLogPricePreviewQuery } from '@/entities/trading-log/model/use
 
 export function TradingLogInput() {
     const [searchParams, setSearchParams] = useState<{ tradeDate: string; stockName: string } | null>(null);
-    const [isDark, setIsDark] = useState(() => (typeof window === 'undefined' ? true : document.documentElement.classList.contains('dark')));
     const [debouncedKeyword, setDebouncedKeyword] = useState('');
     const [isStockInputFocused, setIsStockInputFocused] = useState(false);
     const queryClient = useQueryClient();
@@ -50,21 +49,14 @@ export function TradingLogInput() {
                 nextLow: preview.nextLow,
                 nextClose: preview.nextClose
             });
-            await queryClient.invalidateQueries({ queryKey: tradingLogQueries.list().queryKey });
+            const tradingLogListKey = [...tradingLogQueries.all(), 'list'];
+            await queryClient.invalidateQueries({ queryKey: tradingLogListKey });
+            await queryClient.refetchQueries({ queryKey: tradingLogListKey, type: 'active' });
             window.alert('매매 기록이 저장되었습니다.');
         } catch (error) {
             const message = error instanceof Error ? error.message : '저장 중 오류가 발생했습니다.';
             window.alert(message);
         }
-    };
-
-    const handleToggleTheme = () => {
-        const root = document.documentElement;
-        const nextDark = !isDark;
-
-        setIsDark(nextDark);
-        root.classList.toggle('dark', nextDark);
-        localStorage.setItem('theme', nextDark ? 'dark' : 'light');
     };
 
     const handleSelectSuggestion = (value: string) => {
@@ -100,7 +92,6 @@ export function TradingLogInput() {
             tradeDate={tradeDate}
             stockName={stockName}
             preview={preview}
-            isDark={isDark}
             canSearch={canSearch}
             isFetching={isFetching}
             isError={isError}
@@ -116,7 +107,6 @@ export function TradingLogInput() {
             onSuggestionSelect={handleSelectSuggestion}
             onSearch={handleSearch}
             onSave={handleSave}
-            onToggleTheme={handleToggleTheme}
         />
     );
 }

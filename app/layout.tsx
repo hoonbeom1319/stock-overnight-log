@@ -6,8 +6,6 @@ import './globals.css';
 
 import { AppProvider } from '@/application/providers';
 
-import { ThemeScript } from '@/shared/providers/theme-script';
-
 
 export const metadata: Metadata = {
     title: 'stock-overnight-log',
@@ -16,10 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
-        <html lang="ko" suppressHydrationWarning>
-            <head>
-                <ThemeScript />
-            </head>
+        <html lang="ko" className="dark">
             <body>
                 <AppProvider>{children}</AppProvider>
             </body>
