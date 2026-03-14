@@ -1,12 +1,7 @@
-export interface PricePreview {
-  buyPrice: number;
-  nextHigh: number;
-  nextLow: number;
-  nextClose: number;
-}
+import type { MarketPricePreview } from '@/entities/trading-log/model/types';
 
 export interface TradingLogFormState {
   tradeDate: string;
   stockName: string;
-  preview: PricePreview | null;
+  preview: MarketPricePreview | null;
 }

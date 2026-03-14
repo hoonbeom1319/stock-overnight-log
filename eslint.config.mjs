@@ -18,10 +18,40 @@ export default defineConfig([
         settings: {
             'boundaries/elements': [
                 {
+                    type: 'app',
+                    pattern: 'app/*',
+                    mode: 'folder'
+                },
+                {
+                    type: 'application',
+                    pattern: 'application/*',
+                    mode: 'folder'
+                },
+                {
+                    type: 'view',
+                    pattern: 'views/*',
+                    mode: 'folder'
+                },
+                {
+                    type: 'widget',
+                    pattern: 'widgets/*',
+                    mode: 'folder'
+                },
+                {
+                    type: 'feature',
+                    pattern: 'features/*',
+                    mode: 'folder'
+                },
+                {
                     type: 'entity',
                     pattern: 'entities/*',
                     mode: 'folder',
                     capture: ['entityName']
+                },
+                {
+                    type: 'server',
+                    pattern: 'server/*',
+                    mode: 'folder'
                 },
                 {
                     type: 'shared',
@@ -48,6 +78,11 @@ export default defineConfig([
                                 ]
                             ],
                             message: 'entities 간 직접 import는 금지입니다. shared로 이동하거나 상위 레이어에서 조합하세요.'
+                        },
+                        {
+                            from: ['view', 'widget', 'feature', 'entity', 'shared'],
+                            disallow: ['server'],
+                            message: 'client 레이어에서는 server 레이어를 import할 수 없습니다.'
                         }
                     ]
                 }
@@ -60,6 +95,10 @@ export default defineConfig([
                     alphabetize: { order: 'asc', caseInsensitive: true },
                     pathGroups: [
                         { pattern: 'react', group: 'external', position: 'before' },
+                        { pattern: '@/application', group: 'internal', position: 'before' },
+                        { pattern: '@/application/**', group: 'internal', position: 'before' },
+                        { pattern: '@/server', group: 'internal', position: 'before' },
+                        { pattern: '@/server/**', group: 'internal', position: 'before' },
                         { pattern: '@/widgets', group: 'internal', position: 'before' },
                         { pattern: '@/widgets/**', group: 'internal', position: 'before' },
                         { pattern: '@/views', group: 'internal', position: 'before' },

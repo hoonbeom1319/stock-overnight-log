@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
-import { PricePreview, TradingLogFormState } from "@/features/trading-log-input/model/types";
+import { TradingLogFormState } from "@/features/trading-log-input/model/types";
+
+import type { MarketPricePreview } from '@/entities/trading-log/model/types';
 
 interface TradingLogFormStore extends TradingLogFormState {
   setTradeDate: (date: string) => void;
   setStockName: (name: string) => void;
-  setPreview: (preview: PricePreview | null) => void;
+  setPreview: (preview: MarketPricePreview | null) => void;
   resetPreview: () => void;
 }
 

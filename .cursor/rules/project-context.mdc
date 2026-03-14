@@ -20,10 +20,11 @@ alwaysApply: true
 - 데이터 카드/리스트는 모바일에서 세로 흐름을 기본으로 구성하고 데스크톱에서만 다단 확장
 - 성능 최적화(초기 렌더, 네트워크 요청 수, 번들 크기)는 모바일 네트워크 환경 기준으로 판단
 
-## 디렉토리 구조 (루트 FSD + Application)
+## 디렉토리 구조 (루트 FSD + Application + Server)
 
 - **app/** – App Router 라우트, 레이아웃, 전역 스타일
-- **application/** – 앱 전역 조합 레이어 (예: `application/providers`)
+- **application/** – 서버/클라이언트 공통 전역 레이어 (예: `application/providers`, `application/types`)
+- **server/** – 서버 전용 서비스 레이어 (`server-only` 기반 유즈케이스/외부 API 조합)
 - **views/** – 라우트 단위 화면 조립 레이어 (FSD pages 대체)
 - **widgets/** – 여러 view에서 재사용 가능한 UI 블록
 - **features/** – 사용자 액션 단위 기능 (예: 매매일/종목 입력, 조회, 저장)
@@ -37,12 +38,20 @@ alwaysApply: true
 `app → application → views → widgets → features → entities → shared`
 
 - application은 앱 전역 조립(Provider/Bootstrap) 목적. page 단위 UI 로직은 두지 않음
+- server는 클라이언트 번들에 포함되면 안 되는 서버 전용 로직만 배치
+- `app/api/*`(route handlers), 서버 컴포넌트, server action만 `server/*` import 가능
 - views는 widgets, features, entities, shared를 import 가능
 - widgets는 features, entities, shared를 import 가능
 - features는 entities, shared를 import 가능. 다른 features를 직접 import 불가
-- entities는 shared를 import 가능. **entities 간 직접 import는 원칙적으로 금지**
+- entities는 **client 중심 레이어**로 운영하고 shared만 import 가능. server 레이어 import 금지
+- entities 간 직접 import는 원칙적으로 금지
 - 정말 특별한 케이스에서만 entities 간 import를 허용하고, 그 경우 이유를 코드/PR에 명시
 - shared는 어디서든 import 가능
+
+### shared vs application
+
+- `shared`: 클라이언트 사이드에서 재사용되는 공통 UI/유틸/헬퍼 중심
+- `application`: 프로젝트 전역 규약/조합/계약 타입처럼 서버·클라이언트 모두에서 쓰는 공통 자산 중심
 
 ## 네이밍 컨벤션
 
@@ -66,14 +75,25 @@ alwaysApply: true
 - `features/[domain]/ui/*`는 props 기반 순수 렌더링만 담당 (side effect/비즈니스 로직 금지)
 - 클라이언트 컴포넌트만 `"use client"` 사용
 - 서버 연산/데이터 접근은 App Router 규칙에 맞춰 분리
+- `app/api/*/route.ts`는 HTTP 입출력/에러 매핑만 담당하고, 비즈니스 로직은 `server/services/*`로 분리
+- 서버 전용 파일은 `import 'server-only';`를 기본 적용
 - 반응형 구현 시 모바일 기본 스타일을 먼저 완성한 뒤 breakpoint를 추가
 - 전역 Provider는 `application/providers`에서 조합 후 `app/layout.tsx`에서 단일 진입으로 연결
-- 도메인 API는 `shared/api/*`보다 `entities/[domain]/api.ts`에 우선 배치
+- 클라이언트 도메인 API는 `entities/[domain]/api.ts`에 우선 배치
+- 서버 유즈케이스/외부 API 조합은 `server/services/[domain]/*`에 배치
+
+### server/services 구조 가이드
+
+- `clients`: 외부 시스템 호출(HTTP, 원격 파일, 외부 SDK)
+- `repositories`: 데이터 저장소 접근과 캐시/조회 책임 (DB, 캐시, 마스터 데이터 소스 포함)
+- `mappers`: 외부/저장소 데이터 ↔ 도메인/응답 형태 변환
+- `use-cases`: 실제 기능 시나리오 조합(최종 비즈니스 흐름)
+- `server/services/[domain]/<entry>.ts`는 필요 시 re-export 엔트리로 유지 가능
 
 ## import 규칙 (ESLint import/order)
 
 - 순서: builtin → external → internal → parent → sibling → index
-- internal 그룹은 `@/app`, `@/application`, `@/widgets`, `@/views`, `@/features`, `@/entities`, `@/shared`
+- internal 그룹은 `@/app`, `@/application`, `@/server`, `@/widgets`, `@/views`, `@/features`, `@/entities`, `@/shared`
 - `import/order`는 **warn** 레벨 유지 (개발 중 자동 정렬 권장)
 - 중복 import 금지, import는 파일 상단에만
 - `entities` 교차 import 금지는 ESLint `eslint-plugin-boundaries`로 강제
@@ -82,7 +102,8 @@ alwaysApply: true
 ## 타입 위치
 
 - 전역 `d.ts`에 타입을 누적하지 않고, 타입은 가능한 **도메인 `model/types.ts`에 귀속**
-- 공통 타입이 필요할 때도 먼저 `shared` 또는 각 레이어의 명시 import 가능한 파일로 관리
+- `shared` 레이어에는 타입 전용 폴더(`shared/types`)를 두지 않음
+- 공통/서버 계약 타입은 `application/types/*` 또는 각 레이어의 명시 import 가능한 파일로 관리
 
 ## 현재 도메인 기준
 

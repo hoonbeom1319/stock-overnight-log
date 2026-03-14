@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { TradingLogList } from '@/widgets/trading-log-list';
 
-import { AuthPanel } from '@/features/auth';
 import { TradingLogInput } from '@/features/trading-log-input';
 
 import { supabase } from '@/shared/api/supabase/client';
@@ -60,9 +59,7 @@ export function HomeView() {
                         <TradingLogInput />
                         <TradingLogList />
                     </>
-                ) : (
-                    <AuthPanel />
-                )}
+                ) : null}
             </div>
         </main>
     );

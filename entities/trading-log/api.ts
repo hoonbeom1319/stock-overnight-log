@@ -1,14 +1,32 @@
 import {
     type CreateTradingLogParams,
     type FetchTradingLogPricePreviewParams,
+    type MarketPricePreview,
     type StockSuggestion,
-    type TradingLog,
-    type TradingLogPricePreview
+    type TradingLog
 } from '@/entities/trading-log/model/types';
 
 import { supabase } from '@/shared/api/supabase/client';
 
-export async function fetchTradingLogPricePreview(params: FetchTradingLogPricePreviewParams): Promise<TradingLogPricePreview> {
+async function createAuthHeaders(): Promise<Record<string, string>> {
+    const {
+        data: { session },
+        error
+    } = await supabase.auth.getSession();
+
+    if (error) {
+        throw new Error(`세션 조회 실패: ${error.message}`);
+    }
+
+    const headers: Record<string, string> = {};
+    if (session?.access_token) {
+        headers.Authorization = `Bearer ${session.access_token}`;
+    }
+
+    return headers;
+}
+
+export async function fetchTradingLogPricePreview(params: FetchTradingLogPricePreviewParams): Promise<MarketPricePreview> {
     const searchParams = new URLSearchParams({
         tradeDate: params.tradeDate,
         stockName: params.stockName
@@ -21,22 +39,23 @@ export async function fetchTradingLogPricePreview(params: FetchTradingLogPricePr
         throw new Error(message);
     }
 
-    const payload = (await response.json()) as TradingLogPricePreview;
+    const payload = (await response.json()) as MarketPricePreview;
     return payload;
 }
 
 export async function fetchTradingLogs(): Promise<TradingLog[]> {
-    const { data, error } = await supabase
-        .from('trading_logs')
-        .select('*')
-        .order('trade_date', { ascending: false })
-        .order('created_at', { ascending: false });
+    const response = await fetch('/api/trading-logs', {
+        headers: await createAuthHeaders()
+    });
 
-    if (error) {
-        throw new Error(`매매 기록 목록 조회 실패: ${error.message}`);
+    if (!response.ok) {
+        const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
+        const message = errorPayload?.message ?? '매매 기록 목록 조회에 실패했습니다.';
+        throw new Error(message);
     }
 
-    return (data ?? []) as TradingLog[];
+    const payload = (await response.json()) as TradingLog[];
+    return payload;
 }
 
 export async function fetchStockSuggestions(keyword: string): Promise<StockSuggestion[]> {
@@ -54,36 +73,21 @@ export async function fetchStockSuggestions(keyword: string): Promise<StockSugge
 }
 
 export async function createTradingLog(params: CreateTradingLogParams): Promise<TradingLog> {
-    const {
-        data: { user },
-        error: userError
-    } = await supabase.auth.getUser();
+    const response = await fetch('/api/trading-logs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(await createAuthHeaders())
+        },
+        body: JSON.stringify(params)
+    });
 
-    if (userError) {
-        throw new Error(`로그인 사용자 확인 실패: ${userError.message}`);
+    if (!response.ok) {
+        const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
+        const message = errorPayload?.message ?? '매매 기록 저장에 실패했습니다.';
+        throw new Error(message);
     }
 
-    if (!user) {
-        throw new Error('로그인 상태가 아닙니다. 다시 로그인 후 저장해주세요.');
-    }
-
-    const { data, error } = await supabase
-        .from('trading_logs')
-        .insert({
-            user_id: user.id,
-            trade_date: params.tradeDate,
-            stock_name: params.stockName,
-            buy_price: params.buyPrice,
-            next_high: params.nextHigh,
-            next_low: params.nextLow,
-            next_close: params.nextClose
-        })
-        .select('*')
-        .single();
-
-    if (error) {
-        throw new Error(`매매 기록 저장 실패: ${error.message}`);
-    }
-
-    return data as TradingLog;
+    const payload = (await response.json()) as TradingLog;
+    return payload;
 }

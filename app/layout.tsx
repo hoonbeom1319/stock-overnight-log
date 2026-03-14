@@ -4,9 +4,10 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 
+import { AppProvider } from '@/application/providers';
+
 import { ThemeScript } from '@/shared/providers/theme-script';
 
-import { AppProvider } from '@/application/providers';
 
 export const metadata: Metadata = {
     title: 'stock-overnight-log',

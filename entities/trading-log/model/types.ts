@@ -1,4 +1,4 @@
-export interface TradingLog {
+export type TradingLog = {
     id: string;
     user_id: string;
     trade_date: string;
@@ -8,31 +8,31 @@ export interface TradingLog {
     next_low: number;
     next_close: number;
     created_at: string;
-}
+};
 
-export interface FetchTradingLogPricePreviewParams {
+export type FetchTradingLogPricePreviewParams = {
     tradeDate: string;
     stockName: string;
-}
+};
 
-export interface TradingLogPricePreview {
+export type MarketPricePreview = {
     buyPrice: number;
     nextHigh: number;
     nextLow: number;
     nextClose: number;
-}
+};
 
-export interface CreateTradingLogParams {
+export type CreateTradingLogParams = {
     tradeDate: string;
     stockName: string;
     buyPrice: number;
     nextHigh: number;
     nextLow: number;
     nextClose: number;
-}
+};
 
-export interface StockSuggestion {
+export type StockSuggestion = {
     code: string;
     name: string;
     market: 'KOSPI' | 'KOSDAQ';
-}
+};
