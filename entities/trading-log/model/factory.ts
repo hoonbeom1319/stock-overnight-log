@@ -1,14 +1,14 @@
 import { createTradingLog, fetchStockSuggestions, fetchTradingLogPricePreview, fetchTradingLogs } from '@/entities/trading-log/api';
-import { type CreateTradingLogParams, type FetchTradingLogPricePreviewParams } from '@/entities/trading-log/model/types';
+import { type CreateTradingLogParams, type FetchTradingLogsParams, type FetchTradingLogPricePreviewParams } from '@/entities/trading-log/model/types';
 
 import { mutationOptions, queryOptions } from '@/shared/api/helper';
 
 export const tradingLogQueries = {
     all: () => ['trading-log'] as const,
-    list: () =>
+    list: (params?: FetchTradingLogsParams) =>
         queryOptions({
-            queryKey: [...tradingLogQueries.all(), 'list'],
-            queryFn: fetchTradingLogs
+            queryKey: [...tradingLogQueries.all(), 'list', params?.month ?? 'all'],
+            queryFn: () => fetchTradingLogs(params)
         }),
     stockSuggestions: (keyword: string) =>
         queryOptions({

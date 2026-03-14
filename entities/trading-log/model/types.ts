@@ -3,6 +3,8 @@ export type TradingLog = {
     user_id: string;
     trade_date: string;
     stock_name: string;
+    stock_code?: string;
+    stock_display_name?: string;
     buy_price: number;
     next_high: number;
     next_low: number;
@@ -35,4 +37,8 @@ export type StockSuggestion = {
     code: string;
     name: string;
     market: 'KOSPI' | 'KOSDAQ';
+};
+
+export type FetchTradingLogsParams = {
+    month?: string;
 };

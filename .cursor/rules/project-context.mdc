@@ -77,6 +77,7 @@ alwaysApply: true
 - 서버 연산/데이터 접근은 App Router 규칙에 맞춰 분리
 - `app/api/*/route.ts`는 HTTP 입출력/에러 매핑만 담당하고, 비즈니스 로직은 `server/services/*`로 분리
 - 서버 전용 파일은 `import 'server-only';`를 기본 적용
+- `app/api/*/route.ts`는 도메인 루트 배럴(`@/server/services/[domain]`)을 우선 import
 - 반응형 구현 시 모바일 기본 스타일을 먼저 완성한 뒤 breakpoint를 추가
 - 전역 Provider는 `application/providers`에서 조합 후 `app/layout.tsx`에서 단일 진입으로 연결
 - 클라이언트 도메인 API는 `entities/[domain]/api.ts`에 우선 배치
@@ -88,7 +89,22 @@ alwaysApply: true
 - `repositories`: 데이터 저장소 접근과 캐시/조회 책임 (DB, 캐시, 마스터 데이터 소스 포함)
 - `mappers`: 외부/저장소 데이터 ↔ 도메인/응답 형태 변환
 - `use-cases`: 실제 기능 시나리오 조합(최종 비즈니스 흐름)
-- `server/services/[domain]/<entry>.ts`는 필요 시 re-export 엔트리로 유지 가능
+- `server/services/[domain]/index.ts`를 배럴 엔트리로 두고 route/외부 모듈은 배럴 경로를 우선 사용
+
+### 인증/권한 라우팅 가이드
+
+- 라우팅 보호는 `application/providers/auth-route-guard.tsx`에서 전역 처리
+- 비로그인 사용자는 보호 경로 접근 시 `/login`으로 리다이렉트
+- 로그인 사용자가 `/login` 접근 시 `/`로 리다이렉트
+- `views/home`은 로그인 사용자 전용 화면으로 유지하고 로그인 UI는 `views/login`에서만 렌더링
+
+### trading-log 권한 정책
+
+- `trading_logs` 조회/저장은 클라이언트에서 Supabase 직접 접근하지 않고 `/api/trading-logs`를 통해 서버 경유
+- `GET /api/trading-logs`: 로그인 사용자 조회 허용
+- `POST /api/trading-logs`: 관리자 이메일만 저장 허용
+- 기본 관리자 이메일: `hoonbeom1319@gmail.com`
+- 관리자 이메일 확장 시 `TRADING_LOG_ADMIN_EMAILS`(콤마 구분) 환경변수 사용
 
 ## import 규칙 (ESLint import/order)
 

@@ -4,6 +4,7 @@ import type { CreateTradingLogRequest, TradingLogItem } from '@/application/type
 
 import { createServerSupabaseClient } from '@/server/services/trading-log/clients/supabase-server-client';
 import { TradingLogServiceError } from '@/server/services/trading-log/errors';
+import { isTradingLogAdmin } from '@/server/services/trading-log/lib/permissions';
 
 export async function createTradingLog(payload: CreateTradingLogRequest, accessToken?: string): Promise<TradingLogItem> {
     if (!accessToken) {
@@ -22,6 +23,10 @@ export async function createTradingLog(payload: CreateTradingLogRequest, accessT
 
     if (!user) {
         throw new TradingLogServiceError(401, '로그인 상태가 아닙니다.');
+    }
+
+    if (!isTradingLogAdmin(user.email)) {
+        throw new TradingLogServiceError(403, '저장 권한이 없습니다.');
     }
 
     const { data, error } = await supabase

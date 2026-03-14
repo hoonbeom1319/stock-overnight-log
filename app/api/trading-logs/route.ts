@@ -16,7 +16,8 @@ function getAccessToken(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         const accessToken = getAccessToken(request);
-        const logs = await fetchTradingLogs(accessToken);
+        const month = request.nextUrl.searchParams.get('month') ?? undefined;
+        const logs = await fetchTradingLogs(accessToken, month);
         return NextResponse.json<TradingLogItem[]>(logs);
     } catch (error) {
         if (error instanceof TradingLogServiceError) {

@@ -1,5 +1,6 @@
 import {
     type CreateTradingLogParams,
+    type FetchTradingLogsParams,
     type FetchTradingLogPricePreviewParams,
     type MarketPricePreview,
     type StockSuggestion,
@@ -43,8 +44,16 @@ export async function fetchTradingLogPricePreview(params: FetchTradingLogPricePr
     return payload;
 }
 
-export async function fetchTradingLogs(): Promise<TradingLog[]> {
-    const response = await fetch('/api/trading-logs', {
+export async function fetchTradingLogs(params?: FetchTradingLogsParams): Promise<TradingLog[]> {
+    const searchParams = new URLSearchParams();
+    if (params?.month) {
+        searchParams.set('month', params.month);
+    }
+
+    const query = searchParams.toString();
+    const endpoint = query ? `/api/trading-logs?${query}` : '/api/trading-logs';
+
+    const response = await fetch(endpoint, {
         headers: await createAuthHeaders()
     });
 
