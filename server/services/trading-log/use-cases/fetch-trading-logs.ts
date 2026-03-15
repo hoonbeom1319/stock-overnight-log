@@ -3,6 +3,7 @@ import 'server-only';
 import type { TradingLogItem } from '@/application/types/trading-log';
 
 import { getKrxCatalogRows } from '@/server/services/stock-catalog/repositories/krx-catalog-repository';
+import { findStockAliasesByCodes } from '@/server/services/stock-catalog/repositories/stock-alias-repository';
 import { createServerSupabaseClient } from '@/server/services/trading-log/clients/supabase-server-client';
 import { TradingLogServiceError } from '@/server/services/trading-log/errors';
 
@@ -60,6 +61,8 @@ export async function fetchTradingLogs(accessToken?: string, month?: string): Pr
     if (!logs.length) return logs;
 
     const catalog = await getKrxCatalogRows();
+    const codesInLogs = logs.map((log) => String(log.stock_name ?? '').match(/\b(\d{6})\b/)?.[1]).filter((code): code is string => Boolean(code));
+    const aliasByCode = await findStockAliasesByCodes(codesInLogs);
     const byCode = new Map(catalog.map((row) => [row.code, row]));
     const byExactName = new Map(catalog.map((row) => [row.name.replace(/\s+/g, '').toLowerCase(), row]));
 
@@ -69,16 +72,18 @@ export async function fetchTradingLogs(accessToken?: string, month?: string): Pr
         const normalizedName = raw.replace(/\s+/g, '').toLowerCase();
 
         const byCodeHit = codeMatch ? byCode.get(codeMatch) : undefined;
+        const aliasHit = codeMatch ? aliasByCode.get(codeMatch) : undefined;
         const byNameHit = byExactName.get(normalizedName);
         const partialNameHit =
-            byCodeHit || byNameHit
+            byCodeHit || aliasHit || byNameHit
                 ? undefined
                 : catalog.find((item) => item.name.replace(/\s+/g, '').toLowerCase().includes(normalizedName));
-        const resolved = byCodeHit ?? byNameHit ?? partialNameHit;
+        const resolved = byCodeHit ?? aliasHit ?? byNameHit ?? partialNameHit;
 
         if (!resolved) {
             return {
                 ...log,
+                stock_code: codeMatch ?? undefined,
                 stock_display_name: raw
             };
         }

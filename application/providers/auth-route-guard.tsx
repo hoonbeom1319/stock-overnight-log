@@ -33,7 +33,7 @@ export function AuthRouteGuard({ children }: AuthRouteGuardProps) {
     }, [isLoading, isPublicPath, pathname, router, user]);
 
     if (isLoading) {
-        return <div className="p-6 text-sm text-slate-500 dark:text-slate-400">세션 확인 중...</div>;
+        return <div className="p-6 text-sm text-slate-400">세션 확인 중...</div>;
     }
 
     if (!user && !isPublicPath) return null;

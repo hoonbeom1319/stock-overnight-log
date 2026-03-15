@@ -18,6 +18,10 @@ export async function searchKrxStockSuggestions(keyword: string, limit = 8): Pro
     if (!trimmed) return [];
 
     const normalizedQuery = normalizeText(trimmed);
+    const queryTokens = trimmed
+        .split(/\s+/)
+        .map(normalizeText)
+        .filter(Boolean);
     const catalog = await getKrxCatalogRows();
     const isCodeQuery = /^\d+$/.test(trimmed);
 
@@ -31,10 +35,12 @@ export async function searchKrxStockSuggestions(keyword: string, limit = 8): Pro
                 return { item, score };
             }
 
-            const includes = normalizedName.includes(normalizedQuery);
+            const matchesCombined = `${normalizedName}${item.code}`.includes(normalizedQuery);
+            const matchesTokens = queryTokens.every((token) => normalizedName.includes(token) || item.code.includes(token));
+            const includes = matchesCombined || matchesTokens;
             if (!includes) return null;
 
-            const score = normalizedName.startsWith(normalizedQuery) ? 100 : 70;
+            const score = normalizedName.startsWith(normalizedQuery) ? 100 : matchesTokens ? 85 : 70;
             return { item, score };
         })
         .filter((value): value is { item: KrxStockSuggestion; score: number } => Boolean(value))

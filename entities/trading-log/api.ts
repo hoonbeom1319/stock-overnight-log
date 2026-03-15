@@ -1,5 +1,6 @@
 import {
     type CreateTradingLogParams,
+    type DeleteTradingLogParams,
     type FetchTradingLogsParams,
     type FetchTradingLogPricePreviewParams,
     type MarketPricePreview,
@@ -94,6 +95,23 @@ export async function createTradingLog(params: CreateTradingLogParams): Promise<
     if (!response.ok) {
         const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
         const message = errorPayload?.message ?? '매매 기록 저장에 실패했습니다.';
+        throw new Error(message);
+    }
+
+    const payload = (await response.json()) as TradingLog;
+    return payload;
+}
+
+export async function deleteTradingLog(params: DeleteTradingLogParams): Promise<TradingLog> {
+    const searchParams = new URLSearchParams({ id: params.id });
+    const response = await fetch(`/api/trading-logs?${searchParams.toString()}`, {
+        method: 'DELETE',
+        headers: await createAuthHeaders()
+    });
+
+    if (!response.ok) {
+        const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
+        const message = errorPayload?.message ?? '매매 기록 삭제에 실패했습니다.';
         throw new Error(message);
     }
 

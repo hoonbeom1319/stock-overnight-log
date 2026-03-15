@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import type { CreateTradingLogRequest, TradingLogErrorResponse, TradingLogItem } from '@/application/types/trading-log';
 
-import { createTradingLog, fetchTradingLogs, TradingLogServiceError } from '@/server/services/trading-log';
+import { createTradingLog, deleteTradingLog, fetchTradingLogs, TradingLogServiceError } from '@/server/services/trading-log';
 
 function getAccessToken(request: NextRequest) {
     const authorization = request.headers.get('authorization');
@@ -64,6 +64,27 @@ export async function POST(request: NextRequest) {
         }
 
         const message = error instanceof Error ? error.message : '매매 기록 저장 중 오류가 발생했습니다.';
+        return NextResponse.json<TradingLogErrorResponse>({ message }, { status: 500 });
+    }
+}
+
+export async function DELETE(request: NextRequest) {
+    try {
+        const accessToken = getAccessToken(request);
+        const id = request.nextUrl.searchParams.get('id') ?? '';
+
+        if (!id.trim()) {
+            return NextResponse.json<TradingLogErrorResponse>({ message: '삭제할 매매 기록 id가 필요합니다.' }, { status: 400 });
+        }
+
+        const deleted = await deleteTradingLog(id, accessToken);
+        return NextResponse.json<TradingLogItem>(deleted);
+    } catch (error) {
+        if (error instanceof TradingLogServiceError) {
+            return NextResponse.json<TradingLogErrorResponse>({ message: error.message }, { status: error.status });
+        }
+
+        const message = error instanceof Error ? error.message : '매매 기록 삭제 중 오류가 발생했습니다.';
         return NextResponse.json<TradingLogErrorResponse>({ message }, { status: 500 });
     }
 }

@@ -11,8 +11,16 @@ interface TradingLogFormStore extends TradingLogFormState {
   resetPreview: () => void;
 }
 
+function getTodayDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const date = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${date}`;
+}
+
 export const useTradingLogFormStore = create<TradingLogFormStore>((set) => ({
-  tradeDate: "",
+  tradeDate: getTodayDate(),
   stockName: "",
   preview: null,
   setTradeDate: (tradeDate) => set({ tradeDate }),
