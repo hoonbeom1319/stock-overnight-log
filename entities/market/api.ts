@@ -1,4 +1,4 @@
-import { type FetchMarketStockPriceParams, type MarketStockPrice } from '@/entities/market/model/types';
+import { type FetchMarketStockPriceParams, type MarketStockPrice } from './model/types';
 
 export async function getMarketStockPrice(params: FetchMarketStockPriceParams): Promise<MarketStockPrice> {
     const { tradeDate, stockName } = params;

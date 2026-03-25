@@ -2,9 +2,9 @@ import 'server-only';
 
 import type { CreateTradingLogRequest, TradingLogItem } from '@/application/types/trading-log';
 
-import { createServerSupabaseClient } from '@/server/services/trading-log/clients/supabase-server-client';
-import { TradingLogServiceError } from '@/server/services/trading-log/errors';
-import { isTradingLogAdmin } from '@/server/services/trading-log/lib/permissions';
+import { createServerSupabaseClient } from '../clients/supabase-server-client';
+import { TradingLogServiceError } from '../errors';
+import { isTradingLogAdmin } from '../lib/permissions';
 
 export async function createTradingLog(payload: CreateTradingLogRequest, accessToken?: string): Promise<TradingLogItem> {
     if (!accessToken) {

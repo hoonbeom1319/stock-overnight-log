@@ -2,12 +2,13 @@ import 'server-only';
 
 import type { YahooChartResponse, YahooSearchResponse } from '@/application/types/market-price';
 
+import { FETCH } from '@/shared/api/fetch';
 import { toUnixSeconds } from '@/shared/lib/date';
 
 
 export async function fetchYahooSearch(stockName: string): Promise<YahooSearchResponse> {
     const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(stockName)}&quotesCount=10&newsCount=0&lang=ko-KR&region=KR`;
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await FETCH(url, { cache: 'no-store' });
 
     if (!response.ok) {
         if (response.status === 400) {
@@ -25,7 +26,7 @@ export async function fetchYahooChart(symbol: string, tradeDate: string): Promis
     const period2 = toUnixSeconds(new Date(tradeDateUtc.getTime() + 8 * 24 * 60 * 60 * 1000));
 
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&period1=${period1}&period2=${period2}&events=history&includeAdjustedClose=false`;
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await FETCH(url, { cache: 'no-store' });
 
     if (!response.ok) {
         throw new Error('시세 차트 요청에 실패했습니다.');

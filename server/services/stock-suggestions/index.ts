@@ -1,1 +1,1 @@
-export { searchStockSuggestions } from '@/server/services/stock-suggestions/use-cases/search-stock-suggestions';
+export { searchStockSuggestions } from './use-cases/search-stock-suggestions';

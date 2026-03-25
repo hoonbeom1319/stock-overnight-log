@@ -73,7 +73,6 @@ export function TradingLogForm({
     onSave
 }: TradingLogFormProps) {
     const nextHighRate = preview ? calculateRate(preview.buyPrice, preview.nextHigh) : 0;
-    const nextLowRate = preview ? calculateRate(preview.buyPrice, preview.nextLow) : 0;
     const nextCloseRate = preview ? calculateRate(preview.buyPrice, preview.nextClose) : 0;
 
     return (
@@ -145,7 +144,7 @@ export function TradingLogForm({
                 {isError ? (
                     <p className="mt-3 text-sm text-rose-400">{errorMessage ?? '조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'}</p>
                 ) : preview ? (
-                    <div className="mt-3 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+                    <div className="mt-3 grid grid-cols-2 gap-3 text-sm md:grid-cols-3">
                         <div className="rounded-lg bg-slate-900 p-3">
                             <p className="text-slate-400">당일 종가(매수가)</p>
                             <p className="mt-1 text-lg font-semibold text-slate-100">{preview.buyPrice.toLocaleString()}원</p>
@@ -154,12 +153,6 @@ export function TradingLogForm({
                             <p className="text-slate-400">익일 고가</p>
                             <p className={`mt-1 text-lg font-semibold ${getRateTextColorClass(nextHighRate)}`}>
                                 {preview.nextHigh.toLocaleString()}원 ({getRateIndicator(nextHighRate)} {formatRate(nextHighRate)})
-                            </p>
-                        </div>
-                        <div className="rounded-lg bg-slate-900 p-3">
-                            <p className="text-slate-400">익일 저가</p>
-                            <p className={`mt-1 text-lg font-semibold ${getRateTextColorClass(nextLowRate)}`}>
-                                {preview.nextLow.toLocaleString()}원 ({getRateIndicator(nextLowRate)} {formatRate(nextLowRate)})
                             </p>
                         </div>
                         <div className="rounded-lg bg-slate-900 p-3">

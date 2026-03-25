@@ -1,1 +1,1 @@
-export { HomeView } from '@/views/home/home';
+export { HomeView } from './home';

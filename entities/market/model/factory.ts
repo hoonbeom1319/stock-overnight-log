@@ -1,7 +1,8 @@
-import { getMarketStockPrice } from '@/entities/market/api';
-import { type FetchMarketStockPriceParams } from '@/entities/market/model/types';
-
 import { queryOptions } from '@/shared/api/helper';
+
+import { getMarketStockPrice } from '../api';
+
+import { type FetchMarketStockPriceParams } from './types';
 
 export const marketQueries = {
     all: () => ['market'] as const,

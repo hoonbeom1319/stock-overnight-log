@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { tradingLogQueries } from '@/entities/trading-log/model/factory';
-import { type FetchTradingLogPricePreviewParams } from '@/entities/trading-log/model/types';
+import { tradingLogQueries } from './factory';
+import { type FetchTradingLogPricePreviewParams } from './types';
 
 export function useTradingLogPricePreviewQuery(params: FetchTradingLogPricePreviewParams | null) {
     const resolvedParams = {

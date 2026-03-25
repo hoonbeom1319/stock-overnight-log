@@ -1,3 +1,6 @@
+import { FETCH } from '@/shared/api/fetch';
+import { supabase } from '@/shared/api/supabase/client';
+
 import {
     type CreateTradingLogParams,
     type DeleteTradingLogParams,
@@ -6,9 +9,7 @@ import {
     type MarketPricePreview,
     type StockSuggestion,
     type TradingLog
-} from '@/entities/trading-log/model/types';
-
-import { supabase } from '@/shared/api/supabase/client';
+} from './model/types';
 
 async function createAuthHeaders(): Promise<Record<string, string>> {
     const {
@@ -33,7 +34,7 @@ export async function fetchTradingLogPricePreview(params: FetchTradingLogPricePr
         tradeDate: params.tradeDate,
         stockName: params.stockName
     });
-    const response = await fetch(`/api/market-price?${searchParams.toString()}`);
+    const response = await FETCH(`/api/market-price?${searchParams.toString()}`);
 
     if (!response.ok) {
         const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
@@ -54,7 +55,7 @@ export async function fetchTradingLogs(params?: FetchTradingLogsParams): Promise
     const query = searchParams.toString();
     const endpoint = query ? `/api/trading-logs?${query}` : '/api/trading-logs';
 
-    const response = await fetch(endpoint, {
+    const response = await FETCH(endpoint, {
         headers: await createAuthHeaders()
     });
 
@@ -70,7 +71,7 @@ export async function fetchTradingLogs(params?: FetchTradingLogsParams): Promise
 
 export async function fetchStockSuggestions(keyword: string): Promise<StockSuggestion[]> {
     const searchParams = new URLSearchParams({ q: keyword });
-    const response = await fetch(`/api/stock-suggestions?${searchParams.toString()}`);
+    const response = await FETCH(`/api/stock-suggestions?${searchParams.toString()}`);
 
     if (!response.ok) {
         const errorPayload = (await response.json().catch(() => null)) as { message?: string } | null;
@@ -83,7 +84,7 @@ export async function fetchStockSuggestions(keyword: string): Promise<StockSugge
 }
 
 export async function createTradingLog(params: CreateTradingLogParams): Promise<TradingLog> {
-    const response = await fetch('/api/trading-logs', {
+    const response = await FETCH('/api/trading-logs', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ export async function createTradingLog(params: CreateTradingLogParams): Promise<
 
 export async function deleteTradingLog(params: DeleteTradingLogParams): Promise<TradingLog> {
     const searchParams = new URLSearchParams({ id: params.id });
-    const response = await fetch(`/api/trading-logs?${searchParams.toString()}`, {
+    const response = await FETCH(`/api/trading-logs?${searchParams.toString()}`, {
         method: 'DELETE',
         headers: await createAuthHeaders()
     });

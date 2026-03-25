@@ -1,7 +1,6 @@
 ---
 description: 도메인 API·Query Factory·Server API 패턴과 에러 처리
-globs: 'entities/**/*.ts,features/**/*.tsx,app/api/**/*.ts,server/services/**/*.ts,shared/api/**/*.ts'
-alwaysApply: false
+alwaysApply: true
 ---
 
 # API 패턴

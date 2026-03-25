@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { getKrxCatalogRows } from '@/server/services/stock-catalog/repositories/krx-catalog-repository';
+import { getKrxCatalogRows } from './repositories/krx-catalog-repository';
 
 function normalizeText(value: string) {
     return value.replace(/\s+/g, '').toLowerCase();
