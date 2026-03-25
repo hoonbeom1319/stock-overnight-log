@@ -4,13 +4,13 @@ import { FormEvent, useEffect, useMemo, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useTradingLogFormStore } from '@/features/trading-log-input/model/use-trading-log-form-store';
-import { TradingLogForm } from '@/features/trading-log-input/ui/trading-log-form';
-
 import { tradingLogQueries } from '@/entities/trading-log/model/factory';
 import { useCreateTradingLogMutation } from '@/entities/trading-log/model/use-create-trading-log-mutation';
 import { useStockSuggestionsQuery } from '@/entities/trading-log/model/use-stock-suggestions-query';
 import { useTradingLogPricePreviewQuery } from '@/entities/trading-log/model/use-trading-log-price-preview-query';
+
+import { useTradingLogFormStore } from './model/use-trading-log-form-store';
+import { TradingLogForm } from './ui/trading-log-form';
 
 export function TradingLogInput() {
     const [searchParams, setSearchParams] = useState<{ tradeDate: string; stockName: string } | null>(null);
@@ -39,11 +39,21 @@ export function TradingLogInput() {
 
     const handleSave = async () => {
         if (!preview) return;
+        const normalizedStockName = stockName.trim();
+        const hasSyncedPreview =
+            searchParams !== null &&
+            searchParams.tradeDate === tradeDate &&
+            searchParams.stockName.trim() === normalizedStockName;
+
+        if (!hasSyncedPreview) {
+            window.alert('종목명 또는 매매일이 마지막 조회 결과와 다릅니다. 다시 조회한 뒤 저장해주세요.');
+            return;
+        }
 
         try {
             await saveTradingLog({
                 tradeDate,
-                stockName,
+                stockName: normalizedStockName,
                 buyPrice: preview.buyPrice,
                 nextHigh: preview.nextHigh,
                 nextLow: preview.nextLow,
@@ -61,6 +71,8 @@ export function TradingLogInput() {
 
     const handleSelectSuggestion = (value: string) => {
         setStockName(value);
+        setPreview(null);
+        setSearchParams(null);
         setIsStockInputFocused(false);
     };
 
@@ -72,6 +84,18 @@ export function TradingLogInput() {
         setTimeout(() => {
             setIsStockInputFocused(false);
         }, 120);
+    };
+
+    const handleTradeDateChange = (value: string) => {
+        setTradeDate(value);
+        setPreview(null);
+        setSearchParams(null);
+    };
+
+    const handleStockNameChange = (value: string) => {
+        setStockName(value);
+        setPreview(null);
+        setSearchParams(null);
     };
 
     useEffect(() => {
@@ -100,8 +124,8 @@ export function TradingLogInput() {
             isSuggestionsFetching={isSuggestionsFetching}
             shouldShowSuggestions={shouldShowSuggestions}
             isSaving={isSaving}
-            onTradeDateChange={setTradeDate}
-            onStockNameChange={setStockName}
+            onTradeDateChange={handleTradeDateChange}
+            onStockNameChange={handleStockNameChange}
             onStockInputFocus={handleStockInputFocus}
             onStockInputBlur={handleStockInputBlur}
             onSuggestionSelect={handleSelectSuggestion}

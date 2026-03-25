@@ -73,18 +73,11 @@ export function TradingLogList() {
         }
     };
 
-    useEffect(() => {
-        if (!pendingDeleteId) return;
-        const timer = setTimeout(() => setPendingDeleteId(null), 3000);
-        return () => clearTimeout(timer);
-    }, [pendingDeleteId]);
-
     const rows = useMemo(
         () =>
             (data ?? []).map((log) => {
                 const buyPrice = Number(log.buy_price);
                 const nextHigh = Number(log.next_high);
-                const nextLow = Number(log.next_low);
                 const nextClose = Number(log.next_close);
                 const targetSellPrice = Math.round(buyPrice * (1 + sellTargetRate / 100));
                 const sellPrice = nextHigh >= targetSellPrice ? targetSellPrice : nextClose;
@@ -93,11 +86,9 @@ export function TradingLogList() {
                     ...log,
                     buyPrice,
                     nextHigh,
-                    nextLow,
                     nextClose,
                     sellPrice,
                     nextHighRate: calculateRate(buyPrice, nextHigh),
-                    nextLowRate: calculateRate(buyPrice, nextLow),
                     nextCloseRate: calculateRate(buyPrice, nextClose),
                     sellRate: calculateRate(buyPrice, sellPrice)
                 };
@@ -110,7 +101,12 @@ export function TradingLogList() {
     const winRate = useMemo(() => (rows.length ? (positiveCount / rows.length) * 100 : 0), [positiveCount, rows.length]);
     const totalHighOnlyRate = useMemo(() => rows.reduce((acc, row) => acc + row.nextHighRate, 0), [rows]);
     const totalCloseOnlyRate = useMemo(() => rows.reduce((acc, row) => acc + row.nextCloseRate, 0), [rows]);
-    const totalLowOnlyRate = useMemo(() => rows.reduce((acc, row) => acc + row.nextLowRate, 0), [rows]);
+
+    useEffect(() => {
+        if (!pendingDeleteId) return;
+        const timer = setTimeout(() => setPendingDeleteId(null), 3000);
+        return () => clearTimeout(timer);
+    }, [pendingDeleteId]);
 
     return (
         <Card className="space-y-4">
@@ -158,6 +154,12 @@ export function TradingLogList() {
             ) : (
                 <>
                     <section className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+                        <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3">
+                            <p className="text-xs text-slate-500">매도 합계 수익률</p>
+                            <p className={`mt-1 text-base font-bold ${getRateTextColorClass(totalSellRate)}`}>
+                                {getRateIndicator(totalSellRate)} {formatRate(totalSellRate)}
+                            </p>
+                        </div>
                         <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3">
                             <p className="text-xs text-slate-500">승률</p>
                             <p className={`mt-1 text-base font-bold ${getRateTextColorClass(winRate - 50)}`}>{formatRate(winRate)}</p>
@@ -172,12 +174,6 @@ export function TradingLogList() {
                             <p className="text-xs text-slate-500">월 종가 합산</p>
                             <p className={`mt-1 text-base font-bold ${getRateTextColorClass(totalCloseOnlyRate)}`}>
                                 {getRateIndicator(totalCloseOnlyRate)} {formatRate(totalCloseOnlyRate)}
-                            </p>
-                        </div>
-                        <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3">
-                            <p className="text-xs text-slate-500">월 저가 합산</p>
-                            <p className={`mt-1 text-base font-bold ${getRateTextColorClass(totalLowOnlyRate)}`}>
-                                {getRateIndicator(totalLowOnlyRate)} {formatRate(totalLowOnlyRate)}
                             </p>
                         </div>
                     </section>
@@ -211,7 +207,9 @@ export function TradingLogList() {
                                     </div>
                                     <div>
                                         <dt className="text-slate-500">매도 가격</dt>
-                                        <dd className="mt-0.5 font-semibold text-amber-300">{formatPrice(row.sellPrice)}</dd>
+                                        <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.sellRate)}`}>
+                                            {formatPrice(row.sellPrice)} ({getRateIndicator(row.sellRate)} {formatRate(row.sellRate)})
+                                        </dd>
                                     </div>
                                     <div>
                                         <dt className="text-slate-500">익일 고가</dt>
@@ -220,21 +218,9 @@ export function TradingLogList() {
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-500">익일 저가</dt>
-                                        <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.nextLowRate)}`}>
-                                            {formatPrice(row.nextLow)} ({getRateIndicator(row.nextLowRate)} {formatRate(row.nextLowRate)})
-                                        </dd>
-                                    </div>
-                                    <div>
                                         <dt className="text-slate-500">익일 종가</dt>
                                         <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.nextCloseRate)}`}>
                                             {formatPrice(row.nextClose)} ({getRateIndicator(row.nextCloseRate)} {formatRate(row.nextCloseRate)})
-                                        </dd>
-                                    </div>
-                                    <div>
-                                        <dt className="text-slate-500">매도 수익률</dt>
-                                        <dd className={`mt-0.5 font-bold ${getRateTextColorClass(row.sellRate)}`}>
-                                            {getRateIndicator(row.sellRate)} {formatRate(row.sellRate)}
                                         </dd>
                                     </div>
                                 </dl>
@@ -242,55 +228,45 @@ export function TradingLogList() {
                         ))}
 
                         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-                            <p className="text-sm font-semibold text-slate-100">하단 합계 (매도 수익률)</p>
-                            <p className={`mt-1 text-lg font-bold ${getRateTextColorClass(totalSellRate)}`}>
-                                {getRateIndicator(totalSellRate)} {formatRate(totalSellRate)}
-                            </p>
-                            <p className="mt-2 text-xs text-slate-400">
+                            <p className="text-xs text-slate-400">
                                 매도 규칙: 익일 고가가 +{sellTargetRate.toFixed(1)}% 이상이면 +{sellTargetRate.toFixed(1)}% 가격 매도, 아니면 익일 종가 매도
                             </p>
                         </div>
                     </div>
 
                     <div className="hidden overflow-x-auto rounded-xl border border-slate-800 md:block">
-                        <table className="min-w-[1120px] w-full text-sm">
+                        <table className="w-full min-w-[1120px] text-sm">
                             <thead className="bg-slate-900/80 text-slate-300">
                                 <tr>
-                                    <th className="whitespace-nowrap px-3 py-3 text-left font-medium">매매일</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-left font-medium">종목명</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">매수가(당일 종가)</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">익일 고가</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">익일 저가</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">익일 종가</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">매도 가격</th>
-                                    <th className="whitespace-nowrap px-3 py-3 text-right font-medium">매도 수익률</th>
-                                    {isDeleteAllowed ? <th className="whitespace-nowrap px-3 py-3 text-right font-medium">관리</th> : null}
+                                    <th className="px-3 py-3 text-left font-medium whitespace-nowrap">매매일</th>
+                                    <th className="px-3 py-3 text-left font-medium whitespace-nowrap">종목명</th>
+                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">매수가(당일 종가)</th>
+                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">익일 고가</th>
+                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">익일 종가</th>
+                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">매도 가격</th>
+                                    {isDeleteAllowed ? <th className="px-3 py-3 text-right font-medium whitespace-nowrap">관리</th> : null}
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-800 bg-slate-950/40 text-slate-200">
                                 {rows.map((row) => (
                                     <tr key={row.id}>
-                                        <td className="whitespace-nowrap px-3 py-3">{row.trade_date}</td>
+                                        <td className="px-3 py-3 whitespace-nowrap">{row.trade_date}</td>
                                         <td className="min-w-36 px-3 py-3">
-                                            <p className="whitespace-nowrap font-medium text-slate-100">{row.stock_display_name ?? row.stock_name}</p>
+                                            <p className="font-medium whitespace-nowrap text-slate-100">{row.stock_display_name ?? row.stock_name}</p>
                                             <p className="mt-0.5 text-xs text-slate-400">{row.stock_code ? `(${row.stock_code})` : '-'}</p>
                                         </td>
-                                        <td className="whitespace-nowrap px-3 py-3 text-right text-slate-100">{formatPrice(row.buyPrice)}</td>
-                                        <td className={`whitespace-nowrap px-3 py-3 text-right ${getRateTextColorClass(row.nextHighRate)}`}>
+                                        <td className="px-3 py-3 text-right whitespace-nowrap text-slate-100">{formatPrice(row.buyPrice)}</td>
+                                        <td className={`px-3 py-3 text-right whitespace-nowrap ${getRateTextColorClass(row.nextHighRate)}`}>
                                             {formatPrice(row.nextHigh)} ({getRateIndicator(row.nextHighRate)} {formatRate(row.nextHighRate)})
                                         </td>
-                                        <td className={`whitespace-nowrap px-3 py-3 text-right ${getRateTextColorClass(row.nextLowRate)}`}>
-                                            {formatPrice(row.nextLow)} ({getRateIndicator(row.nextLowRate)} {formatRate(row.nextLowRate)})
-                                        </td>
-                                        <td className={`whitespace-nowrap px-3 py-3 text-right ${getRateTextColorClass(row.nextCloseRate)}`}>
+                                        <td className={`px-3 py-3 text-right whitespace-nowrap ${getRateTextColorClass(row.nextCloseRate)}`}>
                                             {formatPrice(row.nextClose)} ({getRateIndicator(row.nextCloseRate)} {formatRate(row.nextCloseRate)})
                                         </td>
-                                        <td className="whitespace-nowrap px-3 py-3 text-right text-amber-300">{formatPrice(row.sellPrice)}</td>
-                                        <td className={`whitespace-nowrap px-3 py-3 text-right font-semibold ${getRateTextColorClass(row.sellRate)}`}>
-                                            {getRateIndicator(row.sellRate)} {formatRate(row.sellRate)}
+                                        <td className={`px-3 py-3 text-right font-semibold whitespace-nowrap ${getRateTextColorClass(row.sellRate)}`}>
+                                            {formatPrice(row.sellPrice)} ({getRateIndicator(row.sellRate)} {formatRate(row.sellRate)})
                                         </td>
                                         {isDeleteAllowed ? (
-                                            <td className="whitespace-nowrap px-3 py-3 text-right">
+                                            <td className="px-3 py-3 text-right whitespace-nowrap">
                                                 <Button
                                                     type="button"
                                                     variant="secondary"
@@ -307,17 +283,9 @@ export function TradingLogList() {
                             </tbody>
                             <tfoot className="bg-slate-900/70 text-slate-100">
                                 <tr>
-                                    <td className="px-3 py-3 font-semibold" colSpan={isDeleteAllowed ? 8 : 7}>
-                                        하단 합계 (매도 수익률)
-                                    </td>
-                                    <td className={`px-3 py-3 text-right font-bold ${getRateTextColorClass(totalSellRate)}`}>
-                                        {getRateIndicator(totalSellRate)} {formatRate(totalSellRate)}
-                                    </td>
-                                    {isDeleteAllowed ? <td className="px-3 py-3" /> : null}
-                                </tr>
-                                <tr>
-                                    <td className="px-3 pb-3 text-xs text-slate-400" colSpan={isDeleteAllowed ? 9 : 8}>
-                                        매도 규칙: 익일 고가가 +{sellTargetRate.toFixed(1)}% 이상이면 +{sellTargetRate.toFixed(1)}% 가격 매도, 아니면 익일 종가 매도
+                                    <td className="px-3 py-3 text-xs text-slate-400" colSpan={isDeleteAllowed ? 7 : 6}>
+                                        매도 규칙: 익일 고가가 +{sellTargetRate.toFixed(1)}% 이상이면 +{sellTargetRate.toFixed(1)}% 가격 매도, 아니면 익일 종가
+                                        매도
                                     </td>
                                 </tr>
                             </tfoot>

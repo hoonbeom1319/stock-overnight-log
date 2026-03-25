@@ -1,12 +1,12 @@
 import 'server-only';
 
-import { fetchStockMasterCsv } from '@/server/services/stock-catalog/clients/fetch-stock-master-csv';
-import type { KrxCatalogRow } from '@/server/services/stock-catalog/mappers/stock-master-csv';
-import { toKrxCatalogRows } from '@/server/services/stock-catalog/mappers/stock-master-csv';
+import { fetchStockMasterRows } from '../clients/fetch-stock-master-csv';
+import type { KrxCatalogRow } from '../mappers/stock-master-csv';
 
-const CACHE_TTL_MS = 1000 * 60 * 60 * 12;
+/** 프로세스 메모리 캐시 (Next Data Cache와 별개). 상장 마스터는 하루 단위로 맞춤 */
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24;
 
-export type { KrxCatalogRow } from '@/server/services/stock-catalog/mappers/stock-master-csv';
+export type { KrxCatalogRow } from '../mappers/stock-master-csv';
 
 let cache: { data: KrxCatalogRow[]; loadedAt: number } | null = null;
 let loadingPromise: Promise<KrxCatalogRow[]> | null = null;
@@ -21,16 +21,26 @@ export async function getKrxCatalogRows() {
     }
 
     loadingPromise = (async () => {
-        const csv = await fetchStockMasterCsv();
-        const parsedRows = toKrxCatalogRows(csv);
+        try {
+            const parsedRows = await fetchStockMasterRows();
+            cache = {
+                data: parsedRows,
+                loadedAt: Date.now()
+            };
 
-        cache = {
-            data: parsedRows,
-            loadedAt: Date.now()
-        };
+            return parsedRows;
+        } catch (error) {
+            if (cache) {
+                return cache.data;
+            }
 
-        loadingPromise = null;
-        return parsedRows;
+            // 카탈로그 소스 장애(인증키, 외부 API 오류) 시에도 서비스 전체가 500으로 죽지 않도록
+            // 빈 카탈로그로 graceful fallback 한다.
+            console.warn('[stock-catalog] fallback to empty catalog:', error);
+            return [];
+        } finally {
+            loadingPromise = null;
+        }
     })();
 
     return loadingPromise;

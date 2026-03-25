@@ -1,7 +1,8 @@
-import { createTradingLog, deleteTradingLog, fetchStockSuggestions, fetchTradingLogPricePreview, fetchTradingLogs } from '@/entities/trading-log/api';
-import { type CreateTradingLogParams, type DeleteTradingLogParams, type FetchTradingLogsParams, type FetchTradingLogPricePreviewParams } from '@/entities/trading-log/model/types';
-
 import { mutationOptions, queryOptions } from '@/shared/api/helper';
+
+import { createTradingLog, deleteTradingLog, fetchStockSuggestions, fetchTradingLogPricePreview, fetchTradingLogs } from '../api';
+
+import { type CreateTradingLogParams, type DeleteTradingLogParams, type FetchTradingLogsParams, type FetchTradingLogPricePreviewParams } from './types';
 
 export const tradingLogQueries = {
     all: () => ['trading-log'] as const,

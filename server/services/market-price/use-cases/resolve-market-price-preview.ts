@@ -3,11 +3,12 @@ import 'server-only';
 import type { MarketPricePreview } from '@/application/types/market-price';
 
 
-import { fetchYahooChart, fetchYahooSearch } from '@/server/services/market-price/clients/yahoo-client';
-import { MarketPriceServiceError, PREVIEW_NOT_FOUND_MESSAGE, SYMBOL_NOT_FOUND_MESSAGE } from '@/server/services/market-price/errors';
-import { resolveSymbolsFromInput } from '@/server/services/market-price/lib/symbol-resolver';
-import { createCandleSeries, resolvePreview, resolveSymbols } from '@/server/services/market-price/mappers/market-price-preview';
 import { resolveKrxStockByInput } from '@/server/services/stock-catalog';
+
+import { fetchYahooChart, fetchYahooSearch } from '../clients/yahoo-client';
+import { MarketPriceServiceError, PREVIEW_NOT_FOUND_MESSAGE, SYMBOL_NOT_FOUND_MESSAGE } from '../errors';
+import { resolveSymbolsFromInput } from '../lib/symbol-resolver';
+import { createCandleSeries, resolvePreview, resolveSymbols } from '../mappers/market-price-preview';
 
 export async function resolveMarketPricePreview(tradeDate: string, stockName: string): Promise<MarketPricePreview> {
     const fromInput = resolveSymbolsFromInput(stockName);

@@ -1,7 +1,6 @@
 ---
 description: React hooks와 상태 관리 패턴 (Zustand, TanStack Query)
-globs: '**/*.tsx,**/model/*.ts'
-alwaysApply: false
+alwaysApply: true
 ---
 
 # React 패턴

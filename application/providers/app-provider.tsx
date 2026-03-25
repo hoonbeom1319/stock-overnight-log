@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react';
 
-import { AuthRouteGuard } from '@/application/providers/auth-route-guard';
-import { QueryProvider } from '@/application/providers/query-provider';
+import { AuthRouteGuard } from './auth-route-guard';
+import { QueryProvider } from './query-provider';
 
 interface AppProviderProps {
     children: ReactNode;
