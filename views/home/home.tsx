@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { TradingLogList } from '@/widgets/trading-log-list';
+import { Gnb } from '@/widgets/gnb';
 
 import { TradingLogInput } from '@/features/trading-log-input';
 
@@ -28,16 +28,16 @@ export function HomeView() {
     };
 
     return (
-        <main className="min-h-screen bg-linear-to-b from-slate-950 to-slate-900 px-4 py-8 sm:px-6 sm:py-12">
-            <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
+        <main className="min-h-screen bg-linear-to-b from-slate-950 to-slate-900 px-4 py-8 pb-28">
+            <div className="mx-auto flex w-[80%] max-w-6xl flex-col gap-8">
                 <header className="space-y-3">
                     <p className="inline-flex rounded-full border border-sky-400/30 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
                         Stock Overnight Log
                     </p>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-100 md:text-4xl">
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-100">
                         국내 주식 매매일지
                     </h1>
-                    <p className="max-w-2xl text-sm text-slate-400 md:text-base">
+                    <p className="text-sm text-slate-400">
                         시간외 단일가 매수 후 익일 매도 전략을 검증하기 위한 매매 로그를 기록하세요.
                         조회된 시세를 확인한 뒤 저장하면 통계를 위한 데이터셋을 쉽게 구축할 수 있습니다.
                     </p>
@@ -51,16 +51,18 @@ export function HomeView() {
                             <p className="text-sm text-slate-300">
                                 로그인 계정: <span className="font-semibold text-slate-100">{user.email}</span>
                             </p>
-                            <Button type="button" variant="secondary" onClick={handleSignOut} disabled={isSigningOut}>
-                                {isSigningOut ? '로그아웃 중...' : '로그아웃'}
-                            </Button>
+                            <div className="flex flex-wrap gap-2">
+                                <Button type="button" variant="secondary" onClick={handleSignOut} disabled={isSigningOut}>
+                                    {isSigningOut ? '로그아웃 중...' : '로그아웃'}
+                                </Button>
+                            </div>
                         </section>
 
                         <TradingLogInput />
-                        <TradingLogList />
                     </>
                 ) : null}
             </div>
+            <Gnb />
         </main>
     );
 }
