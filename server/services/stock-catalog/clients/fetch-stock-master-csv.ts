@@ -30,6 +30,10 @@ type KrxListedResponse = {
     };
 };
 
+function normalizeKrxStockCode(value: string) {
+    return value.trim().replace(/^[A-Z]/i, '');
+}
+
 function normalizeMarket(value: string) {
     const upper = value.toUpperCase();
     if (upper.includes('KOSPI')) return 'KOSPI' as const;
@@ -84,7 +88,8 @@ export async function fetchStockMasterRows(): Promise<KrxCatalogRow[]> {
         const merged = new Map<string, KrxCatalogRow>();
 
         items.forEach((item) => {
-            const code = item.srtnCd?.trim();
+            const rawCode = item.srtnCd?.trim();
+            const code = rawCode ? normalizeKrxStockCode(rawCode) : '';
             const name = item.itmsNm?.trim();
             const market = normalizeMarket(item.mrktCtg?.trim() ?? '');
             if (!code || !name || !market) return;

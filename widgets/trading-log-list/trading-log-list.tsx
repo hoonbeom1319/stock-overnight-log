@@ -110,13 +110,13 @@ export function TradingLogList() {
 
     return (
         <Card className="space-y-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-3">
                 <div>
                     <h2 className="text-lg font-semibold text-slate-100">저장된 매매 기록</h2>
                     <p className="mt-1 text-sm text-slate-400">월별로 조회하고, 매도 시나리오 수익률을 확인할 수 있습니다.</p>
                 </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex flex-col gap-3">
                     <label className="flex flex-col gap-1 text-sm text-slate-300">
                         조회 월
                         <input
@@ -153,7 +153,7 @@ export function TradingLogList() {
                 <p className="text-sm text-slate-500">선택한 월에 저장된 기록이 없습니다.</p>
             ) : (
                 <>
-                    <section className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+                    <section className="grid grid-cols-2 gap-2">
                         <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3">
                             <p className="text-xs text-slate-500">매도 합계 수익률</p>
                             <p className={`mt-1 text-base font-bold ${getRateTextColorClass(totalSellRate)}`}>
@@ -178,20 +178,22 @@ export function TradingLogList() {
                         </div>
                     </section>
 
-                    <div className="space-y-3 md:hidden">
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(270px,100%),1fr))] gap-3">
                         {rows.map((row) => (
-                            <article key={row.id} className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
-                                <div className="flex items-start justify-between gap-3">
-                                    <div>
+                            <article key={row.id} className="min-w-0 rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                                <div className="flex min-w-0 items-start justify-between gap-3">
+                                    <div className="min-w-0 flex-1">
                                         <p className="text-sm text-slate-400">{row.trade_date}</p>
-                                        <p className="mt-1 text-base font-semibold text-slate-100">{row.stock_display_name ?? row.stock_name}</p>
-                                        <p className="text-xs text-slate-400">{row.stock_code ? `(${row.stock_code})` : '-'}</p>
+                                        <p className="mt-1 wrap-break-word text-base font-semibold text-slate-100">
+                                            {row.stock_display_name ?? row.stock_name}
+                                        </p>
+                                        <p className="wrap-break-word text-xs text-slate-400">{row.stock_code ? `(${row.stock_code})` : '-'}</p>
                                     </div>
                                     {isDeleteAllowed ? (
                                         <Button
                                             type="button"
                                             variant="secondary"
-                                            className={`h-8 px-3 text-xs ${pendingDeleteId === row.id ? 'border-rose-500/70 text-rose-300 hover:bg-rose-500/10' : ''}`}
+                                            className={`h-8 shrink-0 whitespace-nowrap px-3 text-xs ${pendingDeleteId === row.id ? 'border-rose-500/70 text-rose-300 hover:bg-rose-500/10' : ''}`}
                                             onClick={() => handleDelete(row.id)}
                                             disabled={isDeleting}
                                         >
@@ -200,26 +202,34 @@ export function TradingLogList() {
                                     ) : null}
                                 </div>
 
-                                <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
-                                    <div>
-                                        <dt className="text-slate-500">매수가</dt>
-                                        <dd className="mt-0.5 font-semibold text-slate-100">{formatPrice(row.buyPrice)}</dd>
+                                <dl className="mt-3 space-y-2.5 text-sm">
+                                    <div className="flex min-w-0 items-baseline justify-between gap-3">
+                                        <dt className="shrink-0 text-slate-500">매수가</dt>
+                                        <dd className="min-w-0 flex-1 text-right font-semibold whitespace-nowrap tabular-nums text-slate-100">
+                                            {formatPrice(row.buyPrice)}
+                                        </dd>
                                     </div>
-                                    <div>
-                                        <dt className="text-slate-500">매도 가격</dt>
-                                        <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.sellRate)}`}>
+                                    <div className="flex min-w-0 items-baseline justify-between gap-3">
+                                        <dt className="shrink-0 text-slate-500">매도 가격</dt>
+                                        <dd
+                                            className={`min-w-0 flex-1 text-right font-semibold whitespace-nowrap tabular-nums ${getRateTextColorClass(row.sellRate)}`}
+                                        >
                                             {formatPrice(row.sellPrice)} ({getRateIndicator(row.sellRate)} {formatRate(row.sellRate)})
                                         </dd>
                                     </div>
-                                    <div>
-                                        <dt className="text-slate-500">익일 고가</dt>
-                                        <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.nextHighRate)}`}>
+                                    <div className="flex min-w-0 items-baseline justify-between gap-3">
+                                        <dt className="shrink-0 text-slate-500">익일 고가</dt>
+                                        <dd
+                                            className={`min-w-0 flex-1 text-right font-semibold whitespace-nowrap tabular-nums ${getRateTextColorClass(row.nextHighRate)}`}
+                                        >
                                             {formatPrice(row.nextHigh)} ({getRateIndicator(row.nextHighRate)} {formatRate(row.nextHighRate)})
                                         </dd>
                                     </div>
-                                    <div>
-                                        <dt className="text-slate-500">익일 종가</dt>
-                                        <dd className={`mt-0.5 font-semibold ${getRateTextColorClass(row.nextCloseRate)}`}>
+                                    <div className="flex min-w-0 items-baseline justify-between gap-3">
+                                        <dt className="shrink-0 text-slate-500">익일 종가</dt>
+                                        <dd
+                                            className={`min-w-0 flex-1 text-right font-semibold whitespace-nowrap tabular-nums ${getRateTextColorClass(row.nextCloseRate)}`}
+                                        >
                                             {formatPrice(row.nextClose)} ({getRateIndicator(row.nextCloseRate)} {formatRate(row.nextCloseRate)})
                                         </dd>
                                     </div>
@@ -227,69 +237,11 @@ export function TradingLogList() {
                             </article>
                         ))}
 
-                        <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
+                        <div className="col-span-full rounded-xl border border-slate-800 bg-slate-900/70 p-4">
                             <p className="text-xs text-slate-400">
                                 매도 규칙: 익일 고가가 +{sellTargetRate.toFixed(1)}% 이상이면 +{sellTargetRate.toFixed(1)}% 가격 매도, 아니면 익일 종가 매도
                             </p>
                         </div>
-                    </div>
-
-                    <div className="hidden overflow-x-auto rounded-xl border border-slate-800 md:block">
-                        <table className="w-full min-w-[1120px] text-sm">
-                            <thead className="bg-slate-900/80 text-slate-300">
-                                <tr>
-                                    <th className="px-3 py-3 text-left font-medium whitespace-nowrap">매매일</th>
-                                    <th className="px-3 py-3 text-left font-medium whitespace-nowrap">종목명</th>
-                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">매수가(당일 종가)</th>
-                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">익일 고가</th>
-                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">익일 종가</th>
-                                    <th className="px-3 py-3 text-right font-medium whitespace-nowrap">매도 가격</th>
-                                    {isDeleteAllowed ? <th className="px-3 py-3 text-right font-medium whitespace-nowrap">관리</th> : null}
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-800 bg-slate-950/40 text-slate-200">
-                                {rows.map((row) => (
-                                    <tr key={row.id}>
-                                        <td className="px-3 py-3 whitespace-nowrap">{row.trade_date}</td>
-                                        <td className="min-w-36 px-3 py-3">
-                                            <p className="font-medium whitespace-nowrap text-slate-100">{row.stock_display_name ?? row.stock_name}</p>
-                                            <p className="mt-0.5 text-xs text-slate-400">{row.stock_code ? `(${row.stock_code})` : '-'}</p>
-                                        </td>
-                                        <td className="px-3 py-3 text-right whitespace-nowrap text-slate-100">{formatPrice(row.buyPrice)}</td>
-                                        <td className={`px-3 py-3 text-right whitespace-nowrap ${getRateTextColorClass(row.nextHighRate)}`}>
-                                            {formatPrice(row.nextHigh)} ({getRateIndicator(row.nextHighRate)} {formatRate(row.nextHighRate)})
-                                        </td>
-                                        <td className={`px-3 py-3 text-right whitespace-nowrap ${getRateTextColorClass(row.nextCloseRate)}`}>
-                                            {formatPrice(row.nextClose)} ({getRateIndicator(row.nextCloseRate)} {formatRate(row.nextCloseRate)})
-                                        </td>
-                                        <td className={`px-3 py-3 text-right font-semibold whitespace-nowrap ${getRateTextColorClass(row.sellRate)}`}>
-                                            {formatPrice(row.sellPrice)} ({getRateIndicator(row.sellRate)} {formatRate(row.sellRate)})
-                                        </td>
-                                        {isDeleteAllowed ? (
-                                            <td className="px-3 py-3 text-right whitespace-nowrap">
-                                                <Button
-                                                    type="button"
-                                                    variant="secondary"
-                                                    className={`h-9 px-3 text-xs ${pendingDeleteId === row.id ? 'border-rose-500/70 text-rose-300 hover:bg-rose-500/10' : ''}`}
-                                                    onClick={() => handleDelete(row.id)}
-                                                    disabled={isDeleting}
-                                                >
-                                                    {pendingDeleteId === row.id ? '한번 더' : '삭제'}
-                                                </Button>
-                                            </td>
-                                        ) : null}
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot className="bg-slate-900/70 text-slate-100">
-                                <tr>
-                                    <td className="px-3 py-3 text-xs text-slate-400" colSpan={isDeleteAllowed ? 7 : 6}>
-                                        매도 규칙: 익일 고가가 +{sellTargetRate.toFixed(1)}% 이상이면 +{sellTargetRate.toFixed(1)}% 가격 매도, 아니면 익일 종가
-                                        매도
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
                     </div>
                 </>
             )}
