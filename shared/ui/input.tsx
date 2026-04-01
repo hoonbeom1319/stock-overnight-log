@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from 'react';
 
 import { Primitive } from '@radix-ui/react-primitive';
 
-import { cn } from '../lib/utils/cn';
+import { cn } from '@/design-system/lib/utils';
 
 export function Input({ className, ...props }: ComponentPropsWithoutRef<typeof Primitive.input>) {
     return (

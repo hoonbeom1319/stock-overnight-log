@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from 'react';
 
 import { Primitive } from '@radix-ui/react-primitive';
 
-import { cn } from '../lib/utils/cn';
+import { cn } from '@/design-system/lib/utils';
 
 type ButtonProps = ComponentPropsWithoutRef<typeof Primitive.button> & {
     variant?: 'primary' | 'secondary';
