@@ -7,7 +7,7 @@ export { Button } from '@/design-system/input/button';
 export { RadioGroup, RadioGroupItem } from '@/design-system/input/radio';
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/design-system/input/select';
 export { Typography } from '@/design-system/display/typography';
-export { Menu, MenuClose, MenuContent, MenuTrigger } from '@/design-system/navigation/menu';
+export { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/design-system/navigation/dialog';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from '@/design-system/navigation/tabs';
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/design-system/surface/accordion';
 export { Card, CardContent, CardDescription, CardTitle } from '@/design-system/surface/card';

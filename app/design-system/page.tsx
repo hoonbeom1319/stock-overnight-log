@@ -17,10 +17,10 @@ import {
     CollapseTrigger,
     Container,
     Input,
-    Menu,
-    MenuClose,
-    MenuContent,
-    MenuTrigger,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogTrigger,
     RadioGroup,
     RadioGroupItem,
     Icon,
@@ -35,9 +35,13 @@ import {
     TabsTrigger,
     Typography
 } from '@/design-system';
+import { CancelButton, Confirm, ConfirmBody, ConfirmButton, ConfirmTitle, useConfirm } from '@/design-system/feedback/confirm';
+import { DialogTitle } from '@/design-system/navigation/dialog';
 
 export default function DesignSystemPage() {
     const [isOpen, setIsOpen] = useState(false);
+    const confirm = useConfirm((s) => s.confirm);
+    const closeAll = useConfirm((s) => s.closeAll);
 
     return (
         <Container className="space-y-4 py-6">
@@ -52,13 +56,13 @@ export default function DesignSystemPage() {
                     </div>
                     <Input placeholder="종목명을 입력해보세요" />
                     <RadioGroup defaultValue="buy" className="flex items-center gap-3">
-                        <label htmlFor="trade-buy" className="flex cursor-pointer items-center gap-2 text-sm text-secondary-900">
+                        <label htmlFor="trade-buy" className="text-secondary-900 flex cursor-pointer items-center gap-2 text-sm">
                             <RadioGroupItem id="trade-buy" value="buy" />
-                            매수
+                            라디오1
                         </label>
-                        <label htmlFor="trade-sell" className="flex cursor-pointer items-center gap-2 text-sm text-secondary-900">
+                        <label htmlFor="trade-sell" className="text-secondary-900 flex cursor-pointer items-center gap-2 text-sm">
                             <RadioGroupItem id="trade-sell" value="sell" />
-                            매도
+                            라디오2
                         </label>
                     </RadioGroup>
                     <Select defaultValue="single">
@@ -66,8 +70,8 @@ export default function DesignSystemPage() {
                             <SelectValue placeholder="전략 선택" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="single">시간외 단일가</SelectItem>
-                            <SelectItem value="scalp">단타</SelectItem>
+                            <SelectItem value="single">SELECT1</SelectItem>
+                            <SelectItem value="scalp">SELECT2</SelectItem>
                         </SelectContent>
                     </Select>
                     <div className="flex items-center gap-2">
@@ -87,10 +91,10 @@ export default function DesignSystemPage() {
                             <TabsTrigger value="tab-1">기본</TabsTrigger>
                             <TabsTrigger value="tab-2">확장</TabsTrigger>
                         </TabsList>
-                        <TabsContent value="tab-1" className="text-sm text-primary-700">
+                        <TabsContent value="tab-1" className="text-primary-700 text-sm">
                             모바일 우선 토큰 적용 예시
                         </TabsContent>
-                        <TabsContent value="tab-2" className="text-sm text-primary-700">
+                        <TabsContent value="tab-2" className="text-primary-700 text-sm">
                             Radix primitive 조합 예시
                         </TabsContent>
                     </Tabs>
@@ -106,33 +110,76 @@ export default function DesignSystemPage() {
                         <CollapseTrigger asChild>
                             <Button variant="secondary">{isOpen ? '접기' : '펼치기'}</Button>
                         </CollapseTrigger>
-                        <CollapseContent className="pt-2 text-sm text-primary-700">
-                            Collapsible 기반의 간단한 collapse 컴포넌트입니다.
-                        </CollapseContent>
+                        <CollapseContent className="text-primary-700 pt-2 text-sm">Collapsible 기반의 간단한 collapse 컴포넌트입니다.</CollapseContent>
                     </Collapse>
                 </CardContent>
             </Card>
 
             <Card>
-                <CardTitle>Mobile Menu</CardTitle>
+                <CardTitle>Mobile Dialog</CardTitle>
                 <CardContent>
-                    <Menu>
-                        <MenuTrigger asChild>
+                    <Dialog>
+                        <DialogTrigger asChild>
                             <Button size="lg" className="w-full">
                                 메뉴 열기
                             </Button>
-                        </MenuTrigger>
-                        <MenuContent>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle hidden>AA!</DialogTitle>
                             <div className="space-y-3">
-                                <p className="text-sm text-primary-900">모바일 하단 시트 스타일 메뉴 예시입니다.</p>
-                                <MenuClose asChild>
+                                <p className="text-primary text-sm">모바일 하단 시트 스타일 메뉴 예시입니다.</p>
+                                <DialogClose asChild>
                                     <Button variant="secondary" className="w-full">
                                         닫기
                                     </Button>
-                                </MenuClose>
+                                </DialogClose>
                             </div>
-                        </MenuContent>
-                    </Menu>
+                        </DialogContent>
+                    </Dialog>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardTitle>Confirm</CardTitle>
+                <div>
+                    <Button
+                        onClick={() =>
+                            confirm('confirm').then((r) => {
+                                console.log(r);
+                                closeAll();
+                            })
+                        }
+                    >
+                        Confirm
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            confirm('confirm2').then((r) => {
+                                console.log(r);
+                                closeAll();
+                            })
+                        }
+                    >
+                        Confirm2
+                    </Button>
+                </div>
+                <CardContent>
+                    <Confirm name="confirm">
+                        <ConfirmTitle>Confirm</ConfirmTitle>
+
+                        <ConfirmBody>
+                            <ConfirmButton>Confirm</ConfirmButton>
+                            <CancelButton>Cancel</CancelButton>
+                        </ConfirmBody>
+                    </Confirm>
+
+                    <Confirm name="confirm2">
+                        <ConfirmTitle>Confirm2</ConfirmTitle>
+
+                        <ConfirmBody></ConfirmBody>
+                        <ConfirmButton>Confirm2</ConfirmButton>
+                        <CancelButton>Cancel2</CancelButton>
+                    </Confirm>
                 </CardContent>
             </Card>
         </Container>

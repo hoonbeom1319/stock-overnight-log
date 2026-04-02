@@ -33,11 +33,17 @@ export function AccordionTrigger({ className, children, ...props }: AccordionTri
     );
 }
 
-export function AccordionContent({ className, ...props }: AccordionContentProps) {
+export function AccordionContent({ className, children, ...props }: AccordionContentProps) {
     return (
         <AccordionPrimitive.Content
-            className={cn('overflow-hidden pb-4 pt-2 text-sm text-secondary-100 data-[state=open]:animate-in', className)}
+            className={cn(
+                'overflow-hidden text-sm text-secondary-100',
+                'data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up',
+                className
+            )}
             {...props}
-        />
+        >
+            <div className="pb-4 pt-2">{children}</div>
+        </AccordionPrimitive.Content>
     );
 }
