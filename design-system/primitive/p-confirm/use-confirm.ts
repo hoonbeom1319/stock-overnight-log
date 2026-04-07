@@ -1,5 +1,6 @@
 'use client';
 
+import type { RefObject } from 'react';
 import { createContext, useContext, useSyncExternalStore } from 'react';
 
 type NodeState = {
@@ -75,7 +76,7 @@ export const useConfirm = <T>(selector: (state: ConfirmStore) => T): T =>
         () => selector(confirmStore.getSnapshot())
     );
 
-export const confirmContext = createContext('');
+export const confirmContext = createContext<{ name: string; returnFocusToRef: RefObject<HTMLElement | null> | null }>({ name: '', returnFocusToRef: null });
 
 export const useConfirmContext = () => {
     const context = useContext(confirmContext);

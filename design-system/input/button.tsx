@@ -1,46 +1,31 @@
-'use client';
+import { ComponentProps } from 'react';
 
-import * as React from 'react';
+import { cn, tw } from '@/design-system/lib/utils';
 
-import { Slot } from '@radix-ui/react-slot';
-
-import { cn } from '@/design-system/lib/utils';
+import { PButton } from '../primitive';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
-type ButtonSize = 'sm' | 'md' | 'lg';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    asChild?: boolean;
-    variant?: ButtonVariant;
-    size?: ButtonSize;
+type ButtonProps = ComponentProps<typeof PButton> & { variant?: ButtonVariant };
+
+const buttonVariants: Record<ButtonVariant, string> = {
+    primary: tw`bg-primary hover:bg-primary-200 focus-visible:ring-primary/40 active:bg-primary-100 text-white`,
+    secondary: tw`bg-secondary hover:bg-secondary-200 focus-visible:ring-secondary/40 active:bg-secondary-100 text-white`,
+    ghost: tw`text-secondary-900 hover:bg-secondary-100 focus-visible:ring-secondary/30 active:bg-secondary-200 bg-transparent`
 };
 
-const variantClassName: Record<ButtonVariant, string> = {
-    primary: 'bg-primary text-white hover:bg-primary-200',
-    secondary: 'bg-secondary text-white hover:bg-secondary-200',
-    ghost: 'bg-transparent text-secondary-900 hover:bg-secondary-100'
-};
-
-const sizeClassName: Record<ButtonSize, string> = {
-    sm: 'h-9 px-3 text-sm',
-    md: 'h-11 px-4 text-sm',
-    lg: 'h-12 px-5 text-base'
-};
-
-export function Button({ asChild = false, className, variant = 'primary', size = 'md', ...props }: ButtonProps) {
-    const Comp = asChild ? Slot : 'button';
-
+const Button = ({ className, variant = 'primary', ...props }: ButtonProps) => {
     return (
-        <Comp
+        <PButton
             className={cn(
-                'inline-flex items-center justify-center rounded-lg font-medium transition-colors',
-                'focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:outline-none',
-                'disabled:pointer-events-none disabled:opacity-50',
-                variantClassName[variant],
-                sizeClassName[size],
+                'inline-flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg px-2 py-1 transition-colors focus-visible:ring-2 focus-visible:outline-none',
+                'disabled:pointer-events-none disabled:opacity-60',
+                buttonVariants[variant],
                 className
             )}
             {...props}
         />
     );
-}
+};
+
+export { Button, buttonVariants };

@@ -75,7 +75,9 @@ const variantClassName: Record<TypographyVariant, string> = {
     'button-100-B': 'text-[1rem] leading-[1] font-bold'
 };
 
-export function Typography<T extends ElementType = 'p'>({ as, variant, className, ...props }: TypographyProps<T>) {
-    const Comp = as ?? 'p';
+const Typography = <T extends ElementType = 'div'>({ as, variant, className, ...props }: TypographyProps<T>) => {
+    const Comp = as ?? 'div';
     return <Comp className={cn(variantClassName[variant], className)} {...props} />;
-}
+};
+
+export { Typography };

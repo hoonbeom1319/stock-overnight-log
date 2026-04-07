@@ -35,7 +35,7 @@ import {
     TabsTrigger,
     Typography
 } from '@/design-system';
-import { CancelButton, Confirm, ConfirmBody, ConfirmButton, ConfirmTitle, useConfirm } from '@/design-system/feedback/confirm';
+import { CancelButton, Confirm, ConfirmBody, ConfirmButton, ConfirmButtonGroup, ConfirmTitle, useConfirm } from '@/design-system/feedback/confirm';
 import { DialogTitle } from '@/design-system/navigation/dialog';
 
 export default function DesignSystemPage() {
@@ -50,11 +50,24 @@ export default function DesignSystemPage() {
                 <CardDescription>Radix UI 기반 컴포넌트 미리보기</CardDescription>
                 <CardContent className="mt-4 space-y-3">
                     <div className="flex gap-2">
-                        <Button>Primary</Button>
-                        <Button variant="secondary">Secondary</Button>
-                        <Button variant="ghost">Ghost</Button>
+                        <Button onClick={() => alert('primary')}>Primary</Button>
+                        <Button variant="secondary" onClick={() => alert('secondary')}>
+                            Secondary
+                        </Button>
+                        <Button variant="ghost" onClick={() => alert('ghost')}>
+                            Ghost
+                        </Button>
                     </div>
-                    <Input placeholder="종목명을 입력해보세요" />
+                    <div className="flex gap-2">
+                        <Button disabled>Primary</Button>
+                        <Button variant="secondary" disabled>
+                            Secondary
+                        </Button>
+                        <Button variant="ghost" disabled>
+                            Ghost
+                        </Button>
+                    </div>
+                    <Input placeholder="입력칸" />
                     <RadioGroup defaultValue="buy" className="flex items-center gap-3">
                         <label htmlFor="trade-buy" className="text-secondary-900 flex cursor-pointer items-center gap-2 text-sm">
                             <RadioGroupItem id="trade-buy" value="buy" />
@@ -120,12 +133,11 @@ export default function DesignSystemPage() {
                 <CardContent>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button size="lg" className="w-full">
-                                메뉴 열기
-                            </Button>
+                            <Button className="w-full">메뉴 열기</Button>
                         </DialogTrigger>
                         <DialogContent>
-                            <DialogTitle hidden>AA!</DialogTitle>
+                            <DialogTitle>AA!</DialogTitle>
+                            <DialogClose>X</DialogClose>
                             <div className="space-y-3">
                                 <p className="text-primary text-sm">모바일 하단 시트 스타일 메뉴 예시입니다.</p>
                                 <DialogClose asChild>
@@ -144,7 +156,7 @@ export default function DesignSystemPage() {
                 <div>
                     <Button
                         onClick={() =>
-                            confirm('confirm').then((r) => {
+                            confirm('confirm').then(async (r) => {
                                 console.log(r);
                                 closeAll();
                             })
@@ -165,20 +177,23 @@ export default function DesignSystemPage() {
                 </div>
                 <CardContent>
                     <Confirm name="confirm">
-                        <ConfirmTitle>Confirm</ConfirmTitle>
-
-                        <ConfirmBody>
-                            <ConfirmButton>Confirm</ConfirmButton>
+                        <ConfirmTitle hidden hideClose>
+                            Confirm
+                        </ConfirmTitle>
+                        <ConfirmBody>body입니다!</ConfirmBody>
+                        <ConfirmButtonGroup>
                             <CancelButton>Cancel</CancelButton>
-                        </ConfirmBody>
+                            <ConfirmButton>Confirm</ConfirmButton>
+                        </ConfirmButtonGroup>
                     </Confirm>
 
                     <Confirm name="confirm2">
                         <ConfirmTitle>Confirm2</ConfirmTitle>
-
-                        <ConfirmBody></ConfirmBody>
-                        <ConfirmButton>Confirm2</ConfirmButton>
-                        <CancelButton>Cancel2</CancelButton>
+                        <ConfirmBody>body입니다!</ConfirmBody>
+                        <ConfirmButtonGroup>
+                            <CancelButton>Cancel2</CancelButton>
+                            <ConfirmButton>Confirm2</ConfirmButton>
+                        </ConfirmButtonGroup>
                     </Confirm>
                 </CardContent>
             </Card>
