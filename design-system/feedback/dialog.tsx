@@ -7,8 +7,13 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { cn } from '@/design-system/lib/utils';
 
 export const Dialog = DialogPrimitive.Root;
+
 export const DialogTrigger = DialogPrimitive.Trigger;
+
 export const DialogClose = DialogPrimitive.Close;
+
+export const DialogDescription = DialogPrimitive.Description;
+
 export const DialogTitle = DialogPrimitive.Title;
 
 type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>;
