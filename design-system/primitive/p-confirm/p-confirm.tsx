@@ -12,7 +12,12 @@ type PButtonProps = PropsWithChildren<{ className?: string; name?: string; onCli
 
 const PConfirm = ({ name, children }: PropsWithChildren<{ name: string }>) => {
     const t = useConfirm((s) => s.node[name]);
+    const close = useConfirm((s) => s.close);
     const returnFocusToRef = useRef<HTMLElement | null>(null);
+
+    const handleOpenChange = (open: boolean) => {
+        if (!open && t?.resolve) close(name);
+    };
 
     useEffect(() => {
         if (t?.open) {
@@ -22,7 +27,7 @@ const PConfirm = ({ name, children }: PropsWithChildren<{ name: string }>) => {
 
     return (
         <confirmContext.Provider value={{ name, returnFocusToRef }}>
-            <Dialog open={!!t?.open}>
+            <Dialog open={!!t?.open} onOpenChange={handleOpenChange}>
                 <DialogPortal>{children}</DialogPortal>
             </Dialog>
         </confirmContext.Provider>

@@ -54,17 +54,14 @@ export default function DesignSystemPage() {
                         <Button variant="secondary" onClick={() => alert('secondary')}>
                             Secondary
                         </Button>
-                        <Button variant="ghost" onClick={() => alert('ghost')}>
-                            Ghost
+                        <Button variant="outline" onClick={() => alert('outline')}>
+                            Secondary
                         </Button>
                     </div>
                     <div className="flex gap-2">
                         <Button disabled>Primary</Button>
                         <Button variant="secondary" disabled>
                             Secondary
-                        </Button>
-                        <Button variant="ghost" disabled>
-                            Ghost
                         </Button>
                     </div>
                     <Input placeholder="입력칸" />
@@ -157,7 +154,9 @@ export default function DesignSystemPage() {
                     <Button
                         onClick={() =>
                             confirm('confirm').then(async (r) => {
-                                console.log(r);
+                                if (r) {
+                                    await new Promise((resolve) => setTimeout(resolve, 4000));
+                                }
                                 closeAll();
                             })
                         }
@@ -182,8 +181,8 @@ export default function DesignSystemPage() {
                         </ConfirmTitle>
                         <ConfirmBody>body입니다!</ConfirmBody>
                         <ConfirmButtonGroup>
-                            <CancelButton>Cancel</CancelButton>
-                            <ConfirmButton>Confirm</ConfirmButton>
+                            <CancelButton>취소</CancelButton>
+                            <ConfirmButton>확인</ConfirmButton>
                         </ConfirmButtonGroup>
                     </Confirm>
 
@@ -191,8 +190,8 @@ export default function DesignSystemPage() {
                         <ConfirmTitle>Confirm2</ConfirmTitle>
                         <ConfirmBody>body입니다!</ConfirmBody>
                         <ConfirmButtonGroup>
-                            <CancelButton>Cancel2</CancelButton>
-                            <ConfirmButton>Confirm2</ConfirmButton>
+                            <CancelButton>취소</CancelButton>
+                            <ConfirmButton>확인</ConfirmButton>
                         </ConfirmButtonGroup>
                     </Confirm>
                 </CardContent>

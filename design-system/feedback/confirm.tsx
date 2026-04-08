@@ -19,8 +19,8 @@ import { PButton } from '../primitive/p-button';
 const Confirm = ({ name, children, className }: ComponentProps<typeof PConfirm> & { className?: string }) => {
     return (
         <PConfirm name={name}>
-            <PConfirmOverlay />
-            <PConfirmContent className={cn('fixed top-1/2 left-1/2 min-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded bg-white px-4 pb-4', className)}>
+            <PConfirmOverlay className="fixed inset-0 bg-black/50" />
+            <PConfirmContent className={cn('fixed top-1/2 left-1/2 min-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pb-4', className)}>
                 {children}
             </PConfirmContent>
         </PConfirm>
@@ -61,7 +61,7 @@ const ConfirmButton = ({ className, name, children, onClick }: ComponentProps<ty
 const CancelButton = ({ className, name, children, onClick }: ComponentProps<typeof PCancelButton>) => {
     return (
         <PCancelButton name={name} onClick={onClick} asChild>
-            <Button className={className} variant="secondary">
+            <Button className={className} variant="outline">
                 {children}
             </Button>
         </PCancelButton>
