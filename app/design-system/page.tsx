@@ -1,201 +1,35 @@
-'use client';
+import Link from 'next/link';
 
-import { useState } from 'react';
-
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-    Button,
-    Card,
-    CardContent,
-    CardDescription,
-    CardTitle,
-    Collapse,
-    CollapseContent,
-    CollapseTrigger,
-    Container,
-    Input,
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogTrigger,
-    RadioGroup,
-    RadioGroupItem,
-    Icon,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-    Typography
-} from '@/design-system';
-import { CancelButton, Confirm, ConfirmBody, ConfirmButton, ConfirmButtonGroup, ConfirmTitle, useConfirm } from '@/design-system/feedback/confirm';
-import { DialogTitle } from '@/design-system/navigation/dialog';
+const categories = ['display', 'feedback', 'input', 'layout', 'navigation', 'surface'] as const;
 
 export default function DesignSystemPage() {
-    const [isOpen, setIsOpen] = useState(false);
-    const confirm = useConfirm((s) => s.confirm);
-    const closeAll = useConfirm((s) => s.closeAll);
-
     return (
-        <Container className="space-y-4 py-6">
-            <Card>
-                <CardTitle>Design System Playground</CardTitle>
-                <CardDescription>Radix UI 기반 컴포넌트 미리보기</CardDescription>
-                <CardContent className="mt-4 space-y-3">
-                    <div className="flex gap-2">
-                        <Button onClick={() => alert('primary')}>Primary</Button>
-                        <Button variant="secondary" onClick={() => alert('secondary')}>
-                            Secondary
-                        </Button>
-                        <Button variant="outline" onClick={() => alert('outline')}>
-                            Secondary
-                        </Button>
-                    </div>
-                    <div className="flex gap-2">
-                        <Button disabled>Primary</Button>
-                        <Button variant="secondary" disabled>
-                            Secondary
-                        </Button>
-                    </div>
-                    <Input placeholder="입력칸" />
-                    <RadioGroup defaultValue="buy" className="flex items-center gap-3">
-                        <label htmlFor="trade-buy" className="text-secondary-900 flex cursor-pointer items-center gap-2 text-sm">
-                            <RadioGroupItem id="trade-buy" value="buy" />
-                            라디오1
-                        </label>
-                        <label htmlFor="trade-sell" className="text-secondary-900 flex cursor-pointer items-center gap-2 text-sm">
-                            <RadioGroupItem id="trade-sell" value="sell" />
-                            라디오2
-                        </label>
-                    </RadioGroup>
-                    <Select defaultValue="single">
-                        <SelectTrigger>
-                            <SelectValue placeholder="전략 선택" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="single">SELECT1</SelectItem>
-                            <SelectItem value="scalp">SELECT2</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <div className="flex items-center gap-2">
-                        <Icon name="PlusIcon" className="text-primary-700" />
-                        <Typography variant="label-100-B" className="text-primary-700">
-                            icon + typography token example
-                        </Typography>
-                    </div>
-                </CardContent>
-            </Card>
+        <div className="space-y-6">
+            <div className="rounded-2xl border bg-white p-6">
+                <div className="text-muted-foreground text-xs font-medium tracking-wide">DESIGN SYSTEM</div>
+                <h1 className="mt-2 text-2xl font-semibold tracking-tight">컴포넌트 문서</h1>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                    왼쪽 사이드바에서 컴포넌트를 선택하면 해당 라우트에서 소개/소스 코드를 확인할 수 있어요.
+                </p>
+            </div>
 
-            <Card>
-                <CardTitle>Tabs / Accordion / Collapse</CardTitle>
-                <CardContent className="space-y-4">
-                    <Tabs defaultValue="tab-1">
-                        <TabsList>
-                            <TabsTrigger value="tab-1">기본</TabsTrigger>
-                            <TabsTrigger value="tab-2">확장</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="tab-1" className="text-primary-700 text-sm">
-                            모바일 우선 토큰 적용 예시
-                        </TabsContent>
-                        <TabsContent value="tab-2" className="text-primary-700 text-sm">
-                            Radix primitive 조합 예시
-                        </TabsContent>
-                    </Tabs>
-
-                    <Accordion type="single" collapsible>
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger>아코디언 열기</AccordionTrigger>
-                            <AccordionContent>컨텐츠 블록을 확장해 보여줍니다.</AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-
-                    <Collapse open={isOpen} onOpenChange={setIsOpen}>
-                        <CollapseTrigger asChild>
-                            <Button variant="secondary">{isOpen ? '접기' : '펼치기'}</Button>
-                        </CollapseTrigger>
-                        <CollapseContent className="text-primary-700 pt-2 text-sm">Collapsible 기반의 간단한 collapse 컴포넌트입니다.</CollapseContent>
-                    </Collapse>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardTitle>Mobile Dialog</CardTitle>
-                <CardContent>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button className="w-full">메뉴 열기</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogTitle>AA!</DialogTitle>
-                            <DialogClose>X</DialogClose>
-                            <div className="space-y-3">
-                                <p className="text-primary text-sm">모바일 하단 시트 스타일 메뉴 예시입니다.</p>
-                                <DialogClose asChild>
-                                    <Button variant="secondary" className="w-full">
-                                        닫기
-                                    </Button>
-                                </DialogClose>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {categories.map((c) => (
+                    <Link
+                        key={c}
+                        href={`/design-system/${c}`}
+                        className="group rounded-2xl border bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-sm"
+                    >
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="min-w-0">
+                                <div className="text-sm font-semibold tracking-tight">{c}</div>
+                                <div className="text-muted-foreground mt-1 text-xs">카테고리 페이지</div>
                             </div>
-                        </DialogContent>
-                    </Dialog>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardTitle>Confirm</CardTitle>
-                <div>
-                    <Button
-                        onClick={() =>
-                            confirm('confirm').then(async (r) => {
-                                if (r) {
-                                    await new Promise((resolve) => setTimeout(resolve, 4000));
-                                }
-                                closeAll();
-                            })
-                        }
-                    >
-                        Confirm
-                    </Button>
-                    <Button
-                        onClick={() =>
-                            confirm('confirm2').then((r) => {
-                                console.log(r);
-                                closeAll();
-                            })
-                        }
-                    >
-                        Confirm2
-                    </Button>
-                </div>
-                <CardContent>
-                    <Confirm name="confirm">
-                        <ConfirmTitle hidden hideClose>
-                            Confirm
-                        </ConfirmTitle>
-                        <ConfirmBody>body입니다!</ConfirmBody>
-                        <ConfirmButtonGroup>
-                            <CancelButton>취소</CancelButton>
-                            <ConfirmButton>확인</ConfirmButton>
-                        </ConfirmButtonGroup>
-                    </Confirm>
-
-                    <Confirm name="confirm2">
-                        <ConfirmTitle>Confirm2</ConfirmTitle>
-                        <ConfirmBody>body입니다!</ConfirmBody>
-                        <ConfirmButtonGroup>
-                            <CancelButton>취소</CancelButton>
-                            <ConfirmButton>확인</ConfirmButton>
-                        </ConfirmButtonGroup>
-                    </Confirm>
-                </CardContent>
-            </Card>
-        </Container>
+                            <div className="text-muted-foreground text-sm transition group-hover:translate-x-0.5">→</div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </div>
     );
 }

@@ -2,11 +2,11 @@ import { ComponentProps } from 'react';
 
 import { cn, tw } from '@/design-system/lib/utils';
 
-import { PButton } from '../primitive';
+import * as ButtonPrimitive from '../primitive/button';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline';
 
-type ButtonProps = ComponentProps<typeof PButton> & { variant?: ButtonVariant };
+type ButtonProps = ComponentProps<typeof ButtonPrimitive.Button> & { variant?: ButtonVariant };
 
 const buttonVariants: Record<ButtonVariant, string> = {
     primary: tw`bg-gradient-primary text-white`,
@@ -16,7 +16,7 @@ const buttonVariants: Record<ButtonVariant, string> = {
 
 const Button = ({ className, variant = 'primary', ...props }: ButtonProps) => {
     return (
-        <PButton
+        <ButtonPrimitive.Button
             className={cn(
                 'inline-flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg px-2 py-1 transition duration-150 ease-out',
                 'hover:brightness-110 active:translate-x-px active:translate-y-px active:brightness-95',

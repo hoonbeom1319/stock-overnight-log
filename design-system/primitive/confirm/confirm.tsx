@@ -4,13 +4,13 @@ import { ComponentProps, MouseEventHandler, PropsWithChildren, ReactNode, useEff
 
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogOverlay, DialogPortal } from '@radix-ui/react-dialog';
 
-import { PButton } from '../p-button';
+import * as ButtonPrimitive from '../button';
 
 import { useConfirm, confirmContext, useConfirmContext } from './use-confirm';
 
 type PButtonProps = PropsWithChildren<{ className?: string; name?: string; onClick?: MouseEventHandler<HTMLButtonElement>; asChild?: boolean }>;
 
-const PConfirm = ({ name, children }: PropsWithChildren<{ name: string }>) => {
+const Confirm = ({ name, children }: PropsWithChildren<{ name: string }>) => {
     const t = useConfirm((s) => s.node[name]);
     const close = useConfirm((s) => s.close);
     const returnFocusToRef = useRef<HTMLElement | null>(null);
@@ -34,9 +34,9 @@ const PConfirm = ({ name, children }: PropsWithChildren<{ name: string }>) => {
     );
 };
 
-const PConfirmOverlay = DialogOverlay;
+const ConfirmOverlay = DialogOverlay;
 
-const PConfirmContent = ({ className, children }: { className?: string; children: ReactNode | ((data: unknown) => ReactNode) }) => {
+const ConfirmContent = ({ className, children }: { className?: string; children: ReactNode | ((data: unknown) => ReactNode) }) => {
     const { returnFocusToRef, name } = useConfirmContext();
     const t = useConfirm((s) => s.node[name]);
     const content = typeof children === 'function' ? children(t?.data ?? {}) : children;
@@ -55,9 +55,9 @@ const PConfirmContent = ({ className, children }: { className?: string; children
     );
 };
 
-const PConfirmTitle = DialogTitle;
+const ConfirmTitle = DialogTitle;
 
-const DConfirmClose = ({ onClick, ...props }: ComponentProps<typeof DialogClose>) => {
+const ConfirmClose = ({ onClick, ...props }: ComponentProps<typeof DialogClose>) => {
     const close = useConfirm((s) => s.close);
     const contextName = useConfirmContext().name;
 
@@ -69,7 +69,7 @@ const DConfirmClose = ({ onClick, ...props }: ComponentProps<typeof DialogClose>
     return <DialogClose onClick={handleClick} {...props} />;
 };
 
-const PConfirmButton = ({ className, name, children, onClick, asChild }: PButtonProps) => {
+const ConfirmButton = ({ className, name, children, onClick, asChild }: PButtonProps) => {
     const onConfirm = useConfirm((s) => s.onConfirm);
     const contextName = useConfirmContext().name;
 
@@ -79,13 +79,13 @@ const PConfirmButton = ({ className, name, children, onClick, asChild }: PButton
     };
 
     return (
-        <PButton className={className} onClick={handleClick} asChild={asChild}>
+        <ButtonPrimitive.Button className={className} onClick={handleClick} asChild={asChild}>
             {children}
-        </PButton>
+        </ButtonPrimitive.Button>
     );
 };
 
-const PCancelButton = ({ className, name, children, onClick, asChild }: PButtonProps) => {
+const CancelButton = ({ className, name, children, onClick, asChild }: PButtonProps) => {
     const onConfirm = useConfirm((s) => s.onConfirm);
     const contextName = useConfirmContext().name;
 
@@ -95,10 +95,10 @@ const PCancelButton = ({ className, name, children, onClick, asChild }: PButtonP
     };
 
     return (
-        <PButton className={className} onClick={handleClick} asChild={asChild}>
+        <ButtonPrimitive.Button className={className} onClick={handleClick} asChild={asChild}>
             {children}
-        </PButton>
+        </ButtonPrimitive.Button>
     );
 };
 
-export { PConfirm, PConfirmOverlay, PConfirmContent, PConfirmTitle, DConfirmClose, PConfirmButton, PCancelButton };
+export { Confirm, ConfirmOverlay, ConfirmContent, ConfirmTitle, ConfirmClose, ConfirmButton, CancelButton };

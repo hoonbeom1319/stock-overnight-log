@@ -5,8 +5,7 @@ import { Slot } from '@radix-ui/react-slot';
 type PButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     asChild?: boolean;
 };
-
-export function PButton({ asChild = false, className, type = 'button', role, children, ...props }: PButtonProps) {
+const Button = ({ asChild = false, className, type = 'button', role, children, ...props }: PButtonProps) => {
     const Comp = asChild ? Slot : 'button';
 
     return (
@@ -14,4 +13,6 @@ export function PButton({ asChild = false, className, type = 'button', role, chi
             {children}
         </Comp>
     );
-}
+};
+
+export { Button };
