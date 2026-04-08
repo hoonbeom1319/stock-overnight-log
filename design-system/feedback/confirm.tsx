@@ -1,9 +1,20 @@
 import { ComponentProps, PropsWithChildren } from 'react';
 
-import { PConfirm, PConfirmTitle, PConfirmButton, PCancelButton, PConfirmContent, PConfirmOverlay, useConfirm } from '@/design-system/primitive/p-confirm';
+import {
+    PConfirm,
+    PConfirmTitle,
+    PConfirmButton,
+    PCancelButton,
+    PConfirmContent,
+    PConfirmOverlay,
+    useConfirm,
+    DConfirmClose
+} from '@/design-system/primitive/p-confirm';
 
+import { Icon } from '../display/icon';
 import { Button } from '../input/button';
 import { cn } from '../lib/utils';
+import { PButton } from '../primitive/p-button';
 
 const Confirm = ({ name, children, className }: ComponentProps<typeof PConfirm> & { className?: string }) => {
     return (
@@ -16,11 +27,18 @@ const Confirm = ({ name, children, className }: ComponentProps<typeof PConfirm> 
     );
 };
 
-const ConfirmTitle = ({ children, hidden, hideClose, className }: ComponentProps<typeof PConfirmTitle>) => {
+const ConfirmTitle = ({ children, hidden, hideClose, className }: ComponentProps<typeof PConfirmTitle> & { hideClose?: boolean }) => {
     return (
-        <PConfirmTitle className={cn('py-4', hidden && hideClose && 'pt-0 pb-4', className)} hidden={hidden} hideClose={hideClose}>
-            {children}
-        </PConfirmTitle>
+        <div className={cn('flex w-full items-center justify-between py-4', hidden && hideClose && 'pt-0 pb-4', className)}>
+            <PConfirmTitle hidden={hidden}>{children}</PConfirmTitle>
+            {!hideClose && (
+                <DConfirmClose asChild>
+                    <PButton className="hb-focus-ring-primary min-h-none min-w-none ml-auto flex cursor-pointer items-center justify-center">
+                        <Icon name="Cross1Icon" />
+                    </PButton>
+                </DConfirmClose>
+            )}
+        </div>
     );
 };
 
@@ -33,7 +51,9 @@ const ConfirmButtonGroup = ({ children, className }: PropsWithChildren<{ classNa
 const ConfirmButton = ({ className, name, children, onClick }: ComponentProps<typeof PConfirmButton>) => {
     return (
         <PConfirmButton name={name} onClick={onClick} asChild>
-            <Button className={className}>{children}</Button>
+            <Button className={className} variant="primary">
+                {children}
+            </Button>
         </PConfirmButton>
     );
 };

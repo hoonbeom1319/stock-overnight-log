@@ -61,6 +61,12 @@
     --animate-accordion-up: accordion-up 250ms ease-out;
 }
 
+@layer components {
+    .hb-focus-ring-primary {
+        @apply focus-visible:ring-primary/40 focus-visible:ring-2 focus-visible:outline-none;
+    }
+}
+
 @keyframes accordion-down {
     from {
         height: 0;

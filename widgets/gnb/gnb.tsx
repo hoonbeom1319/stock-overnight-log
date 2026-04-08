@@ -87,7 +87,7 @@ export function Gnb() {
                             aria-current={isActive ? 'page' : undefined}
                             className={[
                                 'group relative flex min-w-[104px] flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-semibold tracking-tight transition',
-                                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 focus-visible:ring-offset-0',
+                                'hb-focus-ring-primary focus-visible:ring-offset-0',
                                 isActive ? 'text-slate-100' : 'text-slate-400 hover:text-slate-200'
                             ].join(' ')}
                         >

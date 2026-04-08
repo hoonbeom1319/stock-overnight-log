@@ -16,7 +16,7 @@ export function RadioGroupItem({ className, ...props }: RadioGroupItemProps) {
             className={cn(
                 'size-5 rounded-full border border-secondary-600 bg-secondary-100 text-primary transition-colors',
                 'data-[state=checked]:border-primary data-[state=checked]:bg-primary-900',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
+                'hb-focus-ring-primary',
                 className
             )}
             {...props}
