@@ -17,7 +17,7 @@ export const Playground = () => {
                 </Button>
             </div>
 
-            <Confirm name={name} className="min-w-[min(520px,calc(100vw-2rem))]">
+            <Confirm name={name}>
                 <ConfirmTitle>Title</ConfirmTitle>
                 <ConfirmBody className="text-sm leading-relaxed text-black/80">Confirm Body</ConfirmBody>
                 <ConfirmButtonGroup>

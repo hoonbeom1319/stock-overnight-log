@@ -88,7 +88,7 @@ export function MobileNav({ nav }: Props) {
 
 export function DesktopNav({ nav }: Props) {
     return (
-        <aside className="sticky top-11 h-[calc(100dvh-2.75rem)] w-0 overflow-hidden pt-3 md:w-[260px] md:overflow-auto">
+        <aside className="sticky top-11 h-[calc(100dvh-2.75rem)] w-0 overflow-hidden pt-3 pb-2 md:w-[260px] md:overflow-auto shadow">
             <div className="px-2 py-2 tracking-wide">COMPONENTS</div>
             <nav className="space-y-4">
                 {nav.map((group) => (
