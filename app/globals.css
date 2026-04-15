@@ -27,6 +27,16 @@
     --color-secondary-900: #eef2ff;
     --color-secondary-950: #ffffff;
 
+    --z-index-base: 0;
+    --z-index-header: 10;
+    --z-index-dropdown: 20;
+    --z-index-popover: 30;
+    --z-index-tooltip: 40;
+    --z-index-backdrop: 50;
+    --z-index-modal: 60;
+    --z-index-toast: 70;
+    --z-index-blocking: 100;
+
     --animate-accordion-down: accordion-down 250ms ease-out;
     --animate-accordion-up: accordion-up 250ms ease-out;
 }

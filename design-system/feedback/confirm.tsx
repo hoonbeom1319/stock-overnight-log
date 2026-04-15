@@ -11,9 +11,9 @@ const useConfirm = ConfirmPrimitive.useConfirm;
 const Confirm = ({ name, children, className }: ComponentProps<typeof ConfirmPrimitive.Confirm> & { className?: string }) => {
     return (
         <ConfirmPrimitive.Confirm name={name}>
-            <ConfirmPrimitive.ConfirmOverlay className="fixed inset-0 bg-black/50" />
+            <ConfirmPrimitive.ConfirmOverlay className="z-backdrop fixed inset-0 bg-black/50" />
             <ConfirmPrimitive.ConfirmContent
-                className={cn('fixed top-1/2 left-1/2 min-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pb-4', className)}
+                className={cn('z-modal fixed top-1/2 left-1/2 min-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pb-4', className)}
             >
                 {children}
             </ConfirmPrimitive.ConfirmContent>

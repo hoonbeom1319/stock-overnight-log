@@ -1,128 +1,84 @@
 ---
-description: stock-overnight-log 프로젝트 컨텍스트
+description: 전역 아키텍처/FSD 규칙
 alwaysApply: true
 ---
 
-# stock-overnight-log 프로젝트 컨텍스트
+# 프로젝트 컨텍스트
 
-## 프로젝트 개요
+## 프로젝트 목표
 
-- **서비스**: 국내 주식 매매일지 (시간외 단일가 매수 후 익일 매도 전략 기록)
-- **제품 원칙**: 모바일 우선(Mobile First). 데스크톱은 확장 대응
-- **스택**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Zustand, TanStack Query, Supabase, Radix UI
-- **Path alias**: `@/*` → 프로젝트 루트 (tsconfig paths)
+- `design-system`에서 검증한 구조를 프로젝트 전역으로 확장한다.
+- App Router + FSD 원칙으로 레이어 책임을 명확히 분리한다.
+- 라우팅 레이어는 얇게 유지하고, 화면 조립과 도메인 로직은 하위 레이어에 위임한다.
 
-## UI/UX 우선순위
+## 디렉토리 역할 (전역)
 
-- 모든 화면은 기본적으로 모바일 viewport(약 360~430px)에서 먼저 설계
-- Tailwind는 기본 클래스를 모바일 기준으로 작성하고, `sm`, `md`, `lg`는 점진적 확장으로만 사용
-- 입력/버튼/터치 영역은 모바일 터치 친화 크기(최소 44px) 우선
-- 데이터 카드/리스트는 모바일에서 세로 흐름을 기본으로 구성하고 데스크톱에서만 다단 확장
-- 성능 최적화(초기 렌더, 네트워크 요청 수, 번들 크기)는 모바일 네트워크 환경 기준으로 판단
+- `app/`: App Router 엔트리, 라우트/레이아웃, 최소한의 서버 렌더링 조립
+- `application/`: 전역 조합(Provider, 공용 계약 타입, 앱 레벨 정책)
+- `views/`: 라우트 단위 화면 조립 레이어
+- `widgets/`: 여러 view에서 재사용하는 UI 블록
+- `features/`: 사용자 액션 단위 기능
+- `entities/`: 도메인 모델/타입/도메인 API
+- `shared/`: 범용 UI/유틸/헬퍼
 
-## 디렉토리 구조 (루트 FSD + Application + Server)
+## 핵심 아키텍처 원칙
 
-- **app/** – App Router 라우트, 레이아웃, 전역 스타일
-- **application/** – 서버/클라이언트 공통 전역 레이어 (예: `application/providers`, `application/types`)
-- **server/** – 서버 전용 서비스 레이어 (`server-only` 기반 유즈케이스/외부 API 조합)
-- **views/** – 라우트 단위 화면 조립 레이어 (FSD pages 대체)
-- **widgets/** – 여러 view에서 재사용 가능한 UI 블록
-- **features/** – 사용자 액션 단위 기능 (예: 매매일/종목 입력, 조회, 저장)
-- **entities/** – 도메인 모델/타입/비즈니스 표현 (예: trading-log)
-- **shared/** – 공통 UI, 유틸, 범용 API helper/클라이언트
+### `app`은 얇게 유지
 
-### FSD 레이어 의존 방향
+- `app/*/page.tsx`, `app/*/layout.tsx`에는 라우팅 진입 + 최소 조립만 둔다.
+- URL params 전달, `notFound` 처리, 메타데이터 조립 같은 작은 로직만 허용한다.
+- 상세 화면 구조, 상호작용 로직, 반복 조립 코드는 `views` 이하로 위임한다.
 
-상위 레이어는 하위 레이어만 참조 가능. 역방향 의존 금지.
+### `views`는 화면 조립의 중심
 
-`app → application → views → widgets → features → entities → shared`
+- route 단위 진입점은 `views/[route]/[route].tsx`를 기본으로 한다.
+- 슬라이스 루트는 조립 엔트리 역할을 담당한다.
+- 상세 표현은 `ui/`, 상태/행위는 `model/`로 분리한다.
 
-- application은 앱 전역 조립(Provider/Bootstrap) 목적. page 단위 UI 로직은 두지 않음
-- server는 클라이언트 번들에 포함되면 안 되는 서버 전용 로직만 배치
-- `app/api/*`(route handlers), 서버 컴포넌트, server action만 `server/*` import 가능
-- views는 widgets, features, entities, shared를 import 가능
-- widgets는 features, entities, shared를 import 가능
-- features는 entities, shared를 import 가능. 다른 features를 직접 import 불가
-- entities는 **client 중심 레이어**로 운영하고 shared만 import 가능. server 레이어 import 금지
-- entities 간 직접 import는 원칙적으로 금지
-- 정말 특별한 케이스에서만 entities 간 import를 허용하고, 그 경우 이유를 코드/PR에 명시
-- shared는 어디서든 import 가능
+### FSD 의존 방향 준수
 
-### shared vs application
+- 기본 레이어 방향: `app -> application -> views -> widgets -> features -> entities -> shared`
+- 상위 레이어는 하위 레이어만 참조한다. 역방향 import는 금지한다.
+- `entities` 간 직접 import는 원칙적으로 금지한다.
 
-- `shared`: 클라이언트 사이드에서 재사용되는 공통 UI/유틸/헬퍼 중심
-- `application`: 프로젝트 전역 규약/조합/계약 타입처럼 서버·클라이언트 모두에서 쓰는 공통 자산 중심
+## 중첩 FSD 규칙 (슬라이스 내부)
 
-## 네이밍 컨벤션
+- 이 프로젝트는 전역 레이어 FSD와 함께, 슬라이스 내부에서도 중첩 FSD를 적용한다.
+- 예시: `views/[domain]/[feature]` 내부에서 `model/`, `ui/`, `lib/` 등으로 다시 책임을 분리한다.
+- 슬라이스 루트 파일(예: `[feature].tsx`)은 조립 엔트리 역할을 담당한다.
+- `model`은 상태/행위/계산을 담당하고, `ui`는 표현을 담당한다.
+- 슬라이스 내부 공용 유틸은 `lib/`에 두고, 외부에 공개할 필요가 없으면 해당 슬라이스 안에서만 사용한다.
+- 슬라이스 내부 파일은 필요한 범위까지만 export하고, 외부 노출은 `index.ts`(배럴) 기준으로 관리한다.
 
-- 컴포넌트: PascalCase. 폴더 및 파일은 kebab-case
-- 이벤트 핸들러 함수: `handle` 접두사 (예: `handleSubmit`)
-- 이벤트 핸들러 prop: `on` 접두사 (예: `onClick`)
-- boolean 변수: `is`, `has`, `can` 등 접두사 사용
+## UI/Model 규칙
 
-### export 네이밍 스코프 규칙
+- `shared/ui/*`는 공용 재사용 컴포넌트이므로 props-only 원칙을 강하게 유지한다.
+- 슬라이스 내부 `ui/*`는 상황에 따라 인터랙션 포함을 허용한다.
+- 재사용되는 상태/행위 또는 복잡한 로직은 `model/`로 분리한다.
 
-- **shared 레벨** (여러 곳에서 import): 파일명과 동일한 **풀네임** 사용
-- **슬라이스 내부 레벨** (해당 슬라이스에서만 사용): **짧은 이름** 허용
+## 서버/클라이언트 경계
 
-## 코딩 패턴
+- 서버 컴포넌트는 데이터 준비/섹션 조립에 집중한다.
+- 사용자 이벤트/로컬 상태가 필요한 부분만 클라이언트 컴포넌트로 분리한다.
+- `'use client'`는 꼭 필요한 최소 범위에만 선언한다.
+- 서버 전용 로직은 클라이언트 번들에 포함하지 않는다.
 
-- 상태/로직은 가능한 `model/`에 두고, `ui/`는 표현에 집중
-- 루트(`/`) 페이지는 `views/home/home.tsx`를 기본 진입 view로 사용
-- view 네이밍은 `views/[route]/[route].tsx` + `views/[route]/index.ts` 배럴 export를 기본 규칙으로 사용
-- feature 컴포넌트는 `features/[domain]/[domain].tsx`를 컨테이너 진입점으로 사용
-- feature 외부 노출은 `features/[domain]/index.ts` 배럴 export 우선
-- `features/[domain]/ui/*`는 props 기반 순수 렌더링만 담당 (side effect/비즈니스 로직 금지)
-- 클라이언트 컴포넌트만 `"use client"` 사용
-- 서버 연산/데이터 접근은 App Router 규칙에 맞춰 분리
-- `app/api/*/route.ts`는 HTTP 입출력/에러 매핑만 담당하고, 비즈니스 로직은 `server/services/*`로 분리
-- 서버 전용 파일은 `import 'server-only';`를 기본 적용
-- `app/api/*/route.ts`는 도메인 루트 배럴(`@/server/services/[domain]`)을 우선 import
-- 반응형 구현 시 모바일 기본 스타일을 먼저 완성한 뒤 breakpoint를 추가
-- 전역 Provider는 `application/providers`에서 조합 후 `app/layout.tsx`에서 단일 진입으로 연결
-- 클라이언트 도메인 API는 `entities/[domain]/api.ts`에 우선 배치
-- 서버 유즈케이스/외부 API 조합은 `server/services/[domain]/*`에 배치
+## 네이밍/코딩 규칙
 
-### server/services 구조 가이드
+- 파일/폴더명은 kebab-case, 컴포넌트명은 PascalCase를 사용한다.
+- 이벤트 핸들러 함수는 `handle*`, 이벤트 prop은 `on*` 네이밍을 따른다.
+- boolean 변수는 `is`, `has`, `can` 접두사를 사용한다.
+- 상태/비즈니스 로직은 가능한 `model`에 두고, `ui`는 표현에 집중한다.
 
-- `clients`: 외부 시스템 호출(HTTP, 원격 파일, 외부 SDK)
-- `repositories`: 데이터 저장소 접근과 캐시/조회 책임 (DB, 캐시, 마스터 데이터 소스 포함)
-- `mappers`: 외부/저장소 데이터 ↔ 도메인/응답 형태 변환
-- `use-cases`: 실제 기능 시나리오 조합(최종 비즈니스 흐름)
-- `server/services/[domain]/index.ts`를 배럴 엔트리로 두고 route/외부 모듈은 배럴 경로를 우선 사용
+## import/타입 규칙
 
-### 인증/권한 라우팅 가이드
+- import는 파일 상단에만 두고 중복 import를 금지한다.
+- import 순서는 `builtin -> external -> internal -> parent -> sibling -> index`를 따른다.
+- 내부 import 그룹은 `@/app`, `@/application`, `@/server`, `@/widgets`, `@/views`, `@/features`, `@/entities`, `@/shared` 순서를 따른다.
+- 공용 계약 타입이 필요한 경우 `application/types/*` 등 명시 경로에 둔다.
 
-- 라우팅 보호는 `application/providers/auth-route-guard.tsx`에서 전역 처리
-- 비로그인 사용자는 보호 경로 접근 시 `/login`으로 리다이렉트
-- 로그인 사용자가 `/login` 접근 시 `/`로 리다이렉트
-- `views/home`은 로그인 사용자 전용 화면으로 유지하고 로그인 UI는 `views/login`에서만 렌더링
+## API/상태 관리 원칙
 
-### trading-log 권한 정책
-
-- `trading_logs` 조회/저장은 클라이언트에서 Supabase 직접 접근하지 않고 `/api/trading-logs`를 통해 서버 경유
-- `GET /api/trading-logs`: 로그인 사용자 조회 허용
-- `POST /api/trading-logs`: 관리자 이메일만 저장 허용
-- 기본 관리자 이메일: `hoonbeom1319@gmail.com`
-- 관리자 이메일 확장 시 `TRADING_LOG_ADMIN_EMAILS`(콤마 구분) 환경변수 사용
-
-## import 규칙 (ESLint import/order)
-
-- 순서: builtin → external → internal → parent → sibling → index
-- internal 그룹은 `@/app`, `@/application`, `@/server`, `@/widgets`, `@/views`, `@/features`, `@/entities`, `@/shared`
-- `import/order`는 **warn** 레벨 유지 (개발 중 자동 정렬 권장)
-- 중복 import 금지, import는 파일 상단에만
-- `entities` 교차 import 금지는 ESLint `eslint-plugin-boundaries`로 강제
-- 도메인이 더 늘어나면 `eslint-plugin-boundaries` 규칙을 확장해 app/views/widgets/features/entities/shared 전체 의존 방향까지 중앙 관리
-
-## 타입 위치
-
-- 전역 `d.ts`에 타입을 누적하지 않고, 타입은 가능한 **도메인 `model/types.ts`에 귀속**
-- `shared` 레이어에는 타입 전용 폴더(`shared/types`)를 두지 않음
-- 공통/서버 계약 타입은 `application/types/*` 또는 각 레이어의 명시 import 가능한 파일로 관리
-
-## 현재 도메인 기준
-
-- 핵심 테이블: `trading_logs`
-- 기본 필드: `trade_date`, `stock_name`, `buy_price`, `next_high`, `next_low`, `next_close`, `created_at`
-- 기본 사용자 흐름: 날짜/종목 입력 → 조회 → 저장 → 하단 리스트 렌더링
+- 클라이언트 API 함수는 `entities/[domain]/api.ts`에 둔다.
+- query/mutation 옵션과 query key는 `entities/[domain]/model/factory.ts`에서 관리한다.
+- API 에러는 무시하지 않고 로깅 또는 사용자 메시지로 처리한다.
