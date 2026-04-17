@@ -1,6 +1,6 @@
 export { Icon } from '@/design-system/display/icon';
-export { Ol, OlLi } from '@/design-system/display/ol-li';
-export { Li, Ul } from '@/design-system/display/ul-li';
+export * as OlRoot from '@/design-system/display/ol-li';
+export * as UlRoot from '@/design-system/display/ul-li';
 export { Container } from '@/design-system/layout/container';
 export { Portal, PortalProvider } from '@/design-system/layout/portal';
 export { Input } from '@/design-system/input/input';
