@@ -19,32 +19,32 @@ export const FeedbackProgress = async () => {
             />
             <ComponentDocumentPlayground>
                 <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5">
-                        <div className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Linear Progress</div>
+                    <div className="space-y-5 rounded-2xl border border-outline-variant bg-surface-container-lowest p-5">
+                        <div className="text-xs font-semibold tracking-[0.12em] text-on-surface-variant uppercase">Linear Progress</div>
                         <div className="space-y-2">
                             <div className="flex items-end justify-between">
-                                <span className="text-xs font-semibold text-slate-700">System Backup</span>
-                                <span className="text-xs font-semibold text-indigo-600">45%</span>
+                                <span className="text-xs font-semibold text-on-surface">System Backup</span>
+                                <span className="text-xs font-semibold text-primary">45%</span>
                             </div>
                             <LinearProgress value={70} />
                         </div>
                         <div className="space-y-2">
-                            <div className="text-xs font-semibold text-slate-700">Searching archives...</div>
+                            <div className="text-xs font-semibold text-on-surface">Searching archives...</div>
                             <LinearProgress indeterminate value={50}/>
-                            <div className="text-[11px] text-slate-500 italic">This may take a few moments</div>
+                            <div className="text-[11px] text-on-surface-variant italic">This may take a few moments</div>
                         </div>
                     </div>
 
-                    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
-                        <div className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Circular Progress</div>
+                    <div className="space-y-4 rounded-2xl border border-outline-variant bg-surface-container-lowest p-5">
+                        <div className="text-xs font-semibold tracking-[0.12em] text-on-surface-variant uppercase">Circular Progress</div>
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col items-center gap-2 rounded-xl bg-slate-50 p-4">
+                            <div className="flex flex-col items-center gap-2 rounded-xl bg-surface-container-low p-4">
                                 <CircularProgress value={75} />
-                                <span className="text-[10px] font-bold tracking-wide text-slate-600 uppercase">Storage</span>
+                                <span className="text-[10px] font-bold tracking-wide text-on-surface-variant uppercase">Storage</span>
                             </div>
-                            <div className="flex flex-col items-center gap-2 rounded-xl bg-slate-50 p-4">
+                            <div className="flex flex-col items-center gap-2 rounded-xl bg-surface-container-low p-4">
                                 <CircularSpinner />
-                                <span className="text-[10px] font-bold tracking-wide text-slate-600 uppercase">Loading</span>
+                                <span className="text-[10px] font-bold tracking-wide text-on-surface-variant uppercase">Loading</span>
                             </div>
                         </div>
                     </div>
@@ -52,17 +52,17 @@ export const FeedbackProgress = async () => {
             </ComponentDocumentPlayground>
             <ComponentDocumentUsage>
                 <div className="space-y-3 text-sm leading-relaxed">
-                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-4">
                         <div className="text-xs font-semibold tracking-wide">결정형/비결정형 분리</div>
-                        <div className="mt-1 text-slate-600">
-                            값이 있을 때는 <code className="rounded bg-black/5 px-1 py-0.5">value</code>를 전달하고, 진행률을 모를 때는{' '}
-                            <code className="rounded bg-black/5 px-1 py-0.5">indeterminate</code>를 사용해 의미를 구분합니다.
+                        <div className="mt-1 text-on-surface-variant">
+                            값이 있을 때는 <code className="rounded bg-surface-container-high px-1 py-0.5">value</code>를 전달하고, 진행률을 모를 때는{' '}
+                            <code className="rounded bg-surface-container-high px-1 py-0.5">indeterminate</code>를 사용해 의미를 구분합니다.
                         </div>
                     </div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-4">
                         <div className="text-xs font-semibold tracking-wide">원형 진행률 계산</div>
-                        <div className="mt-1 text-slate-600">
-                            <code className="rounded bg-black/5 px-1 py-0.5">CircularProgress</code>는 전달된 value/max를 0~100%로 보정한 뒤 SVG stroke를 계산해
+                        <div className="mt-1 text-on-surface-variant">
+                            <code className="rounded bg-surface-container-high px-1 py-0.5">CircularProgress</code>는 전달된 value/max를 0~100%로 보정한 뒤 SVG stroke를 계산해
                             안정적으로 렌더링합니다.
                         </div>
                     </div>
