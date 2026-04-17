@@ -1,0 +1,13 @@
+---
+description: app/design-system 라우팅 엔트리 규칙
+globs: app/design-system/**/*.tsx
+alwaysApply: false
+---
+
+# App Design System Routing
+
+- `app/design-system/*/page.tsx`는 얇은 라우팅 엔트리만 담당한다.
+- 페이지 파일에서는 뷰 컴포넌트 import 후 반환하는 패턴을 기본으로 한다.
+- 문서 조립/시각 로직/컴포넌트 원천 구현은 `views` 또는 `design-system`으로 위임한다.
+
+- 카테고리 루트(`app/design-system/<category>/page.tsx`)는 목록/네비게이션 연결만 수행한다.

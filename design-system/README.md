@@ -111,3 +111,11 @@ export function Example() {
 - 접근성은 옵션이 아니라 기본값이다.
 - `primitive`는 품질의 바닥선, 카테고리 컴포넌트는 제품화 계층이다.
 - 먼저 `design-system`을 단단히 만들고, 이후 `app/views`를 연결한다.
+
+## 12) 운영 고정 규칙 (대화 간 일관성)
+
+- `primitive/*`는 접근성 계약(`role`, `aria-*`, 키보드/포커스)과 headless 구조만 담당한다.
+- 카테고리 컴포넌트(`feedback`, `input`, `overlay` 등)는 계산/variant/tone/스타일/시각 조립을 담당한다.
+- `views/design-system/*`는 문서/Playground 조립 전용이며 원천 컴포넌트 로직을 중복 구현하지 않는다.
+- `app/design-system/*`는 얇은 라우팅 엔트리만 담당한다.
+- primitive import 네이밍은 suffix 패턴으로 통일한다. 예: `ConfirmPrimitive`, `ProgressPrimitive`.

@@ -1,0 +1,14 @@
+---
+description: views/design-system 문서 조립 규칙
+globs: views/design-system/**/*.tsx
+alwaysApply: false
+---
+
+# Views Design System Docs
+
+- `views/design-system/*`는 문서/Playground 조립 레이어다.
+- 이 레이어는 `design-system/*` 컴포넌트를 import해서 조합만 한다.
+- 원천 UI 로직(접근성 계약, 상태 계산, 컴포넌트 계약)을 이 레이어에 중복 구현하지 않는다.
+
+- 문서 페이지는 `ComponentDocument*` 구조를 우선 사용한다.
+- source 표시는 `readDesignSystemComponentSource()` 기준으로 유지한다.

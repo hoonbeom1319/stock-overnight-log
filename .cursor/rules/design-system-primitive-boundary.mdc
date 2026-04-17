@@ -1,0 +1,19 @@
+---
+description: design-system primitive/category 책임 분리 규칙
+globs: design-system/**/*.tsx
+alwaysApply: false
+---
+
+# Design System Primitive Boundary
+
+- `primitive/*`는 접근성 원천 레이어다.
+- `primitive/*`는 `role`, `aria-*`, 키보드/포커스 계약, headless 구조만 담당한다.
+- `primitive/*`에서 색상/간격/애니메이션/도형 계산 같은 시각 표현 로직을 구현하지 않는다.
+- `primitive/*`는 children 조립을 우선하고, 상위 레이어가 시각 요소를 주입할 수 있어야 한다.
+
+- 카테고리 컴포넌트(`feedback`, `input`, `overlay` 등)는 계산/variant/tone/스타일/시각 조립을 담당한다.
+- 카테고리 컴포넌트는 primitive 접근성 계약을 약화시키면 안 된다.
+
+- primitive import 네이밍은 suffix 패턴으로 통일한다.
+- 예: `import * as ConfirmPrimitive from '@/design-system/primitive/confirm'`
+- prefix 별칭(`PrimitiveConfirm`, `PrimitiveLinearProgress`)은 지양한다.
