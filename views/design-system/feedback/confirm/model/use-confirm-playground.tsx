@@ -1,6 +1,6 @@
 'use client';
 
-import { useConfirm } from '@/design-system/feedback/confirm';
+import { useConfirm } from '@/design-system/overlay/confirm';
 
 export const useConfirmPlayground = (name: string) => {
     const confirm = useConfirm((s) => s.confirm);

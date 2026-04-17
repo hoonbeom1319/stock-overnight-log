@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type DesignSystemNavGroup = { category: string; components: string[] };
 
@@ -16,6 +17,7 @@ function categoryLabel(category: string) {
 
 export function MobileNav({ nav }: Props) {
     const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
 
     const handleToggle = useCallback(() => {
         setIsOpen((v) => !v);
@@ -50,8 +52,8 @@ export function MobileNav({ nav }: Props) {
                 <div className="fixed inset-0 z-20">
                     <button type="button" aria-label="메뉴 닫기" onClick={handleClose} className="absolute inset-0 bg-black/40" />
 
-                    <aside className="absolute top-0 left-0 h-full w-[min(86vw,320px)] overflow-auto bg-white pt-3 shadow-xl">
-                        <div className="px-3 pb-2 font-semibold tracking-wide">COMPONENTS</div>
+                    <aside className="absolute top-0 left-0 h-full w-[min(86vw,320px)] overflow-auto border-r border-slate-200 bg-slate-50 pt-3 shadow-xl">
+                        <div className="px-3 pb-2 text-xs font-bold tracking-[0.14em] text-slate-500">COMPONENTS</div>
 
                         <nav className="space-y-4 px-2 pb-4">
                             {nav.map((group) => (
@@ -59,20 +61,30 @@ export function MobileNav({ nav }: Props) {
                                     <Link
                                         href={`/design-system/${group.category}`}
                                         onClick={handleClose}
-                                        className="block rounded-md px-2 py-1.5 font-semibold hover:bg-black/5 active:bg-black/10"
+                                        className="block rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-800 hover:bg-white active:bg-slate-100"
                                     >
                                         {categoryLabel(group.category)}
                                     </Link>
                                     <ul className="mt-1 space-y-0.5">
                                         {group.components.map((name) => (
                                             <li key={`${group.category}/${name}`}>
+                                                {(() => {
+                                                    const href = `/design-system/${group.category}/${name}`;
+                                                    const isActive = pathname === href;
+                                                    return (
                                                 <Link
-                                                    href={`/design-system/${group.category}/${name}`}
+                                                    href={href}
                                                     onClick={handleClose}
-                                                    className="block rounded-md bg-white px-2 py-1 hover:brightness-95 active:brightness-90"
+                                                    className={`block rounded-lg px-2.5 py-1.5 text-sm transition ${
+                                                        isActive
+                                                            ? 'bg-indigo-50 text-indigo-700'
+                                                            : 'text-slate-600 hover:bg-white hover:text-slate-900 active:bg-slate-100'
+                                                    }`}
                                                 >
                                                     {name}
                                                 </Link>
+                                                    );
+                                                })()}
                                             </li>
                                         ))}
                                     </ul>
@@ -87,24 +99,39 @@ export function MobileNav({ nav }: Props) {
 }
 
 export function DesktopNav({ nav }: Props) {
+    const pathname = usePathname();
+
     return (
-        <aside className="sticky top-11 h-[calc(100dvh-2.75rem)] w-0 overflow-hidden pt-3 pb-2 md:w-[260px] md:overflow-auto shadow">
-            <div className="px-2 py-2 tracking-wide">COMPONENTS</div>
-            <nav className="space-y-4">
+        <aside className="sticky top-20 hidden h-[calc(100dvh-6rem)] w-[280px] overflow-auto rounded-2xl border border-slate-200 bg-white/90 p-3 shadow-sm md:block">
+            <div className="px-2 py-2 text-xs font-bold tracking-[0.14em] text-slate-500">COMPONENTS</div>
+            <nav className="space-y-4 pb-2">
                 {nav.map((group) => (
                     <div key={group.category}>
-                        <Link href={`/design-system/${group.category}`} className="block rounded-md px-2 py-1.5 font-semibold hover:bg-black/5">
+                        <Link
+                            href={`/design-system/${group.category}`}
+                            className="block rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-800 hover:bg-slate-100"
+                        >
                             {categoryLabel(group.category)}
                         </Link>
                         <ul className="mt-1 space-y-0.5">
                             {group.components.map((name) => (
                                 <li key={`${group.category}/${name}`}>
-                                    <Link
-                                        href={`/design-system/${group.category}/${name}`}
-                                        className="block rounded-md bg-white px-2 py-1 hover:brightness-95 active:brightness-90"
-                                    >
-                                        {name}
-                                    </Link>
+                                    {(() => {
+                                        const href = `/design-system/${group.category}/${name}`;
+                                        const isActive = pathname === href;
+                                        return (
+                                            <Link
+                                                href={href}
+                                                className={`block rounded-lg px-2.5 py-1.5 text-sm transition ${
+                                                    isActive
+                                                        ? 'bg-indigo-50 text-indigo-700'
+                                                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200'
+                                                }`}
+                                            >
+                                                {name}
+                                            </Link>
+                                        );
+                                    })()}
                                 </li>
                             ))}
                         </ul>

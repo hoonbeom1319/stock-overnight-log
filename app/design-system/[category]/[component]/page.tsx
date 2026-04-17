@@ -1,15 +1,31 @@
+import { notFound } from 'next/navigation';
+
 import { readDesignSystemComponentSource } from '@/views/design-system/lib/helper.server';
+import { CATEGORIES } from '@/views/design-system/lib/const';
 import {
     ComponentDocument,
-    ComponentDocumentUsage,
-    ComponentDocumentSource,
+    ComponentDocumentHeader,
     ComponentDocumentPlayground,
-    ComponentDocumentHeader
+    ComponentDocumentSource,
+    ComponentDocumentUsage
 } from '@/views/design-system/ui';
 
-export default async function Page() {
-    const category = 'display';
-    const component = 'carousel';
+type Params = {
+    category: string;
+    component: string;
+};
+
+const isCategory = (value: string): value is (typeof CATEGORIES)[number] => {
+    return CATEGORIES.includes(value as (typeof CATEGORIES)[number]);
+};
+
+export default async function Page({ params }: { params: Promise<Params> }) {
+    const { category, component } = await params;
+
+    if (!isCategory(category)) {
+        notFound();
+    }
+
     const source = await readDesignSystemComponentSource(category, component);
 
     return (
@@ -19,7 +35,7 @@ export default async function Page() {
                 component={component}
                 title={component}
                 filePath={source.filePath}
-                description="여러 콘텐츠를 한 영역에서 좌우 전환으로 탐색할 수 있는 캐러셀 컴포넌트입니다."
+                description="공통 문서 라우트입니다. 구현이 완료되면 이 페이지에서 source를 즉시 검토할 수 있습니다."
             />
             <ComponentDocumentPlayground>
                 <div>Playground</div>

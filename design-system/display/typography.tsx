@@ -36,13 +36,9 @@ type TypographyVariant =
     | 'button-100-M'
     | 'button-100-B';
 
-type TypographyProps<T extends ElementType = 'p'> = {
-    as?: T;
-    variant: TypographyVariant;
-    className?: string;
-} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'className'>;
+type TypographyProps<T extends ElementType = 'div'> = { as?: T; variant: TypographyVariant } & Omit<ComponentPropsWithoutRef<T>, 'as'>;
 
-const variantClassName: Record<TypographyVariant, string> = {
+const typographyVariants = {
     'title-50-R': 'text-[1.5rem] leading-[1.2] font-normal',
     'title-50-M': 'text-[1.5rem] leading-[1.2] font-medium',
     'title-50-B': 'text-[1.5rem] leading-[1.2] font-bold',
@@ -75,9 +71,42 @@ const variantClassName: Record<TypographyVariant, string> = {
     'button-100-B': 'text-[1rem] leading-[1] font-bold'
 };
 
-const Typography = <T extends ElementType = 'div'>({ as, variant, className, ...props }: TypographyProps<T>) => {
-    const Comp = as ?? 'div';
-    return <Comp className={cn(variantClassName[variant], className)} {...props} />;
+const defaultElementByVariant = {
+    'title-100-R': 'h1',
+    'title-100-M': 'h1',
+    'title-100-B': 'h1',
+    'title-50-R': 'h2',
+    'title-50-M': 'h2',
+    'title-50-B': 'h2',
+    'subtitle-100-R': 'h3',
+    'subtitle-100-M': 'h3',
+    'subtitle-100-B': 'h3',
+    'subtitle-50-R': 'h4',
+    'subtitle-50-M': 'h4',
+    'subtitle-50-B': 'h4',
+    'body-100-R': 'p',
+    'body-100-M': 'p',
+    'body-100-B': 'p',
+    'body-50-R': 'p',
+    'body-50-M': 'p',
+    'body-50-B': 'p',
+    'label-100-R': 'div',
+    'label-100-M': 'div',
+    'label-100-B': 'div',
+    'label-50-R': 'div',
+    'label-50-M': 'div',
+    'label-50-B': 'div',
+    'button-100-R': 'div',
+    'button-100-M': 'div',
+    'button-100-B': 'div',
+    'button-50-R': 'div',
+    'button-50-M': 'div',
+    'button-50-B': 'div'
 };
 
-export { Typography };
+const Typography = <T extends ElementType = 'div'>({ as, variant, className, ...props }: TypographyProps<T>) => {
+    const Comp = as ?? defaultElementByVariant[variant];
+    return <Comp className={cn(typographyVariants[variant], className)} {...props} />;
+};
+
+export { Typography, typographyVariants };

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile Settings - Lucid Curator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#575992",
+                    "background": "#f8f9ff",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#404178",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#767586",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-dim": "#cbdbf5",
+                    "primary": "#4648d4",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "primary-container": "#6063ee",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-variant": "#d3e4fe",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "surface-tint": "#494bd6",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#494b83",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#13144a",
+                    "tertiary": "#904900",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary-container": "#fffbff",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#e5eeff",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-fixed": "#301400",
+                    "secondary-container": "#bdbefe",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#c0c1ff",
+                    "tertiary-container": "#b55d00",
+                    "on-surface-variant": "#464554",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-fixed": "#e1e0ff",
+                    "surface-container-high": "#dce9ff",
+                    "inverse-surface": "#213145",
+                    "on-background": "#0b1c30",
+                    "on-primary-container": "#fffbff",
+                    "on-surface": "#0b1c30",
+                    "tertiary-fixed": "#ffdcc5",
+                    "outline-variant": "#c7c4d7",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#e1e0ff",
+                    "on-primary-fixed": "#07006c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-slate-50 dark:bg-slate-900 flex-col border-r border-slate-200 dark:border-slate-800 z-50">
+<div class="p-6">
+<h1 class="text-lg font-black text-indigo-600 dark:text-indigo-500">Global Admin</h1>
+<p class="font-inter label-md font-medium tracking-normal text-slate-500">Enterprise Tier</p>
+</div>
+<nav class="no-border space-y-1 px-3 flex-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all cursor-pointer transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-inter label-md font-medium">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all cursor-pointer transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-inter label-md font-medium">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all cursor-pointer transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-inter label-md font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all cursor-pointer transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-inter label-md font-medium">Compliance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all cursor-pointer transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-inter label-md font-medium">Audit Logs</span>
+</a>
+</nav>
+<div class="mt-auto p-4 space-y-4">
+<button class="w-full py-2 bg-indigo-600 text-white rounded-md font-semibold text-sm hover:bg-indigo-700 transition-colors">Create New Entry</button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-inter label-md font-medium">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-inter label-md font-medium">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl docked full-width top-0 z-50 shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center w-full px-6 py-3 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Lucid Curator</span>
+<nav class="hidden lg:flex gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors font-inter body-md" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors font-inter body-md" href="#">Analytics</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors font-inter body-md" href="#">Reports</a>
+<a class="text-indigo-600 dark:text-indigo-400 font-semibold border-b-2 border-indigo-600 dark:border-indigo-400 pb-2 font-inter body-md" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="bg-slate-100 dark:bg-slate-800 border-none rounded-full px-4 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500 w-64" placeholder="Search..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400 cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 cursor-pointer">account_circle</span>
+</div>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 h-[1px]"></div>
+</header>
+<div class="p-6 lg:p-10 max-w-5xl mx-auto">
+<!-- Hero Title Section -->
+<div class="mb-10">
+<h2 class="text-[2.75rem] font-bold tracking-tight text-on-surface leading-tight">Profile Settings</h2>
+<p class="text-on-surface-variant body-md mt-2">Manage your digital identity, curate your preferences, and control how you interact with the Global Admin ecosystem.</p>
+</div>
+<!-- Profile Form -->
+<form action="#" class="space-y-8" method="POST">
+<!-- Section: General Info -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<h3 class="text-xl font-bold tracking-tight text-on-surface">General Info</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="block font-medium label-md text-on-surface-variant" for="full_name">Full Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-body-md focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary ring-offset-2 transition-all" id="full_name" name="full_name" placeholder="Alex Sterling" type="text"/>
+<p class="text-xs text-on-surface-variant opacity-70">Your legal name as it appears on official documents.</p>
+</div>
+<div class="space-y-2">
+<label class="block font-medium label-md text-on-surface-variant" for="work_title">Work Title</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-body-md focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary ring-offset-2 transition-all" id="work_title" name="work_title">
+<option>Lead Curator</option>
+<option>System Architect</option>
+<option>Compliance Officer</option>
+<option>Inventory Manager</option>
+</select>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="block font-medium label-md text-on-surface-variant" for="biography">Biography</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-body-md focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary ring-offset-2 transition-all" id="biography" name="biography" placeholder="Briefly describe your role and expertise..." rows="4"></textarea>
+</div>
+</div>
+</section>
+<!-- Section: Preferences (Bento-style layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<section class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">tune</span>
+</div>
+<h3 class="text-xl font-bold tracking-tight text-on-surface">Preferences</h3>
+</div>
+<div class="space-y-6">
+<fieldset>
+<legend class="block font-medium label-md text-on-surface-variant mb-4">Workspace Visibility</legend>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="relative flex items-center p-4 bg-surface-container-low rounded-xl cursor-pointer hover:bg-surface-container-high transition-colors">
+<input class="w-5 h-5 text-primary border-none focus:ring-primary" name="visibility" type="radio" value="public"/>
+<span class="ml-3 block">
+<span class="block font-semibold text-on-surface">Public</span>
+<span class="block text-xs text-on-surface-variant">Visible to all workspace members</span>
+</span>
+</label>
+<label class="relative flex items-center p-4 bg-surface-container-low rounded-xl cursor-pointer hover:bg-surface-container-high transition-colors">
+<input checked="" class="w-5 h-5 text-primary border-none focus:ring-primary" name="visibility" type="radio" value="private"/>
+<span class="ml-3 block">
+<span class="block font-semibold text-on-surface">Private</span>
+<span class="block text-xs text-on-surface-variant">Only you and admins can view</span>
+</span>
+</label>
+</div>
+</fieldset>
+<div class="space-y-4 pt-4 border-t border-surface-container">
+<label class="flex items-center justify-between cursor-pointer group">
+<div>
+<span class="block font-semibold text-on-surface">Beta Features</span>
+<span class="block text-xs text-on-surface-variant">Receive early access to experimental UI components</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<div>
+<span class="block font-semibold text-on-surface">Compact View</span>
+<span class="block text-xs text-on-surface-variant">Reduce whitespace and use smaller font scales</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section: Image Accent (Lucid Design Principle) -->
+<section class="hidden lg:block relative rounded-xl overflow-hidden shadow-sm h-full min-h-[300px]">
+<img alt="Abstract high-tech data visualization" class="absolute inset-0 w-full h-full object-cover" data-alt="abstract digital network visualization with glowing indigo nodes and thin geometric lines on a deep slate background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDKlb6ypYU9N3yAKJVrQzQxzj6f0x4jxhtnDWP0iWAzj46mN0kJH3vk3pQEkcCbq3DB-zPN-GqNs7pbwkxNbxEKcRWiWsGEbnSWR8qzXpaz5QE627bTEfk7SITQOsemmVAJs7jJaZtDSS3PCMXQvzF89n4VJM1E9XJys5lx57_8ktirhaXPaSAK54NqbIvtWD0S3qHCB5tRSiz9T_y5_QAgU2VItLtUauSTwxQpDt1okDh43J-5MbVQJ9t7oUGK3MY-h1VZWE6xNY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-6">
+<p class="text-white text-sm font-medium leading-relaxed italic">"Simplicity is the ultimate sophistication in data curation."</p>
+</div>
+</section>
+</div>
+<!-- Section: Notifications -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+</div>
+<h3 class="text-xl font-bold tracking-tight text-on-surface">Notifications</h3>
+</div>
+<div class="space-y-10">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="block font-medium label-md text-on-surface-variant" for="frequency">Update Frequency</label>
+<span class="text-primary font-bold">75%</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary focus:ring-2 focus:ring-primary focus:ring-offset-2" id="frequency" type="range"/>
+<div class="flex justify-between text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+<span>Rarely</span>
+<span>Balanced</span>
+<span>Real-time</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center h-5">
+<input checked="" class="w-5 h-5 rounded border-none bg-surface-container-low text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div>
+<span class="block font-semibold text-on-surface group-hover:text-primary transition-colors">Email Digests</span>
+<span class="block text-xs text-on-surface-variant">Weekly summaries of your inventory and compliance status.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center h-5">
+<input class="w-5 h-5 rounded border-none bg-surface-container-low text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div>
+<span class="block font-semibold text-on-surface group-hover:text-primary transition-colors">Audit Alerts</span>
+<span class="block text-xs text-on-surface-variant">Immediate notifications for critical compliance violations.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center h-5">
+<input checked="" class="w-5 h-5 rounded border-none bg-surface-container-low text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div>
+<span class="block font-semibold text-on-surface group-hover:text-primary transition-colors">Desktop Notifications</span>
+<span class="block text-xs text-on-surface-variant">Push alerts for real-time dashboard updates.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center h-5">
+<input class="w-5 h-5 rounded border-none bg-surface-container-low text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div>
+<span class="block font-semibold text-on-surface group-hover:text-primary transition-colors">Security Updates</span>
+<span class="block text-xs text-on-surface-variant">Mandatory alerts about account access and protocol changes.</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Sticky Footer Actions -->
+<div class="sticky bottom-8 z-40 flex justify-end items-center gap-4 p-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl shadow-xl border border-white/20">
+<button class="px-6 py-2.5 text-on-surface-variant font-semibold hover:bg-surface-container transition-all rounded-lg active:scale-95" type="button">Discard Changes</button>
+<button class="px-8 py-2.5 bg-gradient-to-br from-primary to-primary-container text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 transition-all" type="submit">
+                        Update Profile
+                    </button>
+</div>
+</form>
+</div>
+</main>
+<!-- BottomNavBar (Shared Component - Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50">
+<div class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Overview</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium">Assets</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Config</span>
+</a>
+</div>
+</nav>
+</body></html>

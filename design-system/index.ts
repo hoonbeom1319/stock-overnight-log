@@ -1,13 +1,13 @@
 export { Icon } from '@/design-system/display/icon';
-export { Li, Ul } from '@/design-system/display/ui-li';
+export { Ol, OlLi } from '@/design-system/display/ol-li';
+export { Li, Ul } from '@/design-system/display/ul-li';
 export { Container } from '@/design-system/layout/container';
 export { Portal, PortalProvider } from '@/design-system/layout/portal';
 export { Input } from '@/design-system/input/input';
 export { Button } from '@/design-system/input/button';
-export { RadioGroup, RadioGroupItem } from '@/design-system/input/radio';
+export { RadioGroup, RadioGroupItem } from '@/design-system/input/radio-group';
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/design-system/input/select';
 export { Typography } from '@/design-system/display/typography';
-export { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/design-system/navigation/dialog';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from '@/design-system/navigation/tabs';
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/design-system/surface/accordion';
 export { Card, CardContent, CardDescription, CardTitle } from '@/design-system/surface/card';

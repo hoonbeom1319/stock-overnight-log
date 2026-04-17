@@ -1,6 +1,6 @@
 'use client';
 
-import { Confirm, ConfirmBody, ConfirmButtonGroup, ConfirmTitle, CancelButton, ConfirmButton } from '@/design-system/feedback/confirm';
+import { Confirm, ConfirmBody, ConfirmButtonGroup, ConfirmTitle, CancelButton, ConfirmButton } from '@/design-system/overlay/confirm';
 import { Button } from '@/design-system/input/button';
 
 import { useConfirmPlayground } from '../model/use-confirm-playground';

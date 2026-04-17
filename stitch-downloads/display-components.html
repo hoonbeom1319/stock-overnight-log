@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Display Typography - Lucid Design System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#703700",
+                    "on-secondary-container": "#494b83",
+                    "primary-container": "#6063ee",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary": "#575992",
+                    "tertiary-fixed": "#ffdcc5",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed": "#301400",
+                    "on-secondary-fixed-variant": "#404178",
+                    "surface-bright": "#f8f9ff",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container": "#e5eeff",
+                    "on-surface": "#0b1c30",
+                    "surface-variant": "#d3e4fe",
+                    "outline": "#767586",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#c0c1ff",
+                    "on-primary-container": "#fffbff",
+                    "tertiary": "#904900",
+                    "surface-tint": "#494bd6",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-container": "#fffbff",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-primary-fixed": "#07006c",
+                    "on-primary": "#ffffff",
+                    "primary": "#4648d4",
+                    "secondary-container": "#bdbefe",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed": "#13144a",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "primary-fixed": "#e1e0ff",
+                    "tertiary-container": "#b55d00",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#e1e0ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-surface-variant": "#464554",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"],
+                    "mono": ["JetBrains Mono", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .typography-card { transition: background-color 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 backdrop-blur-xl shadow-sm flex justify-between items-center px-6 h-16 w-full font-inter tracking-tight">
+<div class="flex items-center gap-8">
+<span class="text-lg font-bold text-slate-900">Lucid Design System</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-slate-600 hover:text-indigo-500 transition-colors" href="#">Docs</a>
+<a class="text-indigo-600 border-b-2 border-indigo-600 pb-1" href="#">Components</a>
+<a class="text-slate-600 hover:text-indigo-500 transition-colors" href="#">Themes</a>
+<a class="text-slate-600 hover:text-indigo-500 transition-colors" href="#">Github</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:block relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="bg-slate-100 border-none rounded-full py-2 pl-10 pr-4 text-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search components..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-slate-600 hover:text-indigo-500 transition-colors">dark_mode</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-slate-50 flex flex-col py-6 overflow-y-auto no-border space-y-1">
+<div class="px-8 mb-6">
+<h2 class="text-indigo-600 font-bold tracking-tight">Library</h2>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">v1.0.4</p>
+</div>
+<nav class="flex flex-col">
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                Getting Started
+            </a>
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">palette</span>
+                Foundations
+            </a>
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-900 border-l-2 border-indigo-600 bg-slate-100 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">extension</span>
+                Components
+            </a>
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">schema</span>
+                Patterns
+            </a>
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                Layout
+            </a>
+<a class="flex items-center gap-3 py-2 pl-4 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-lg">build</span>
+                Utilities
+            </a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-12 pb-20">
+<div class="max-w-5xl mx-auto">
+<!-- Header Section -->
+<header class="mb-16">
+<span class="text-primary font-semibold tracking-wider text-xs uppercase mb-2 block">Foundations</span>
+<h1 class="text-5xl font-extrabold text-on-surface tracking-tight mb-4">Display</h1>
+<p class="text-lg text-on-surface-variant leading-relaxed max-w-3xl">
+                    Our typography system is designed for maximum clarity and editorial impact. We use Inter for all UI and display elements, prioritizing optical hierarchy and rhythmic vertical spacing.
+                </p>
+</header>
+<!-- Typography Scale Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
+<!-- Primary Heading -->
+<div class="md:col-span-8 bg-surface-container-lowest p-8 rounded-xl typography-card hover:bg-surface-container-low">
+<div class="flex justify-between items-start mb-6">
+<span class="text-xs font-mono text-outline uppercase tracking-widest">H1 / Display Large</span>
+<span class="text-xs font-mono text-primary">Inter Bold / 48px / -0.02em</span>
+</div>
+<h1 class="text-[3rem] font-bold tracking-tight leading-tight text-on-surface">The quick brown fox jumps over the lazy dog</h1>
+</div>
+<!-- Secondary Info -->
+<div class="md:col-span-4 bg-primary p-8 rounded-xl flex flex-col justify-between text-on-primary">
+<span class="material-symbols-outlined text-4xl" data-weight="fill">text_fields</span>
+<div>
+<h3 class="text-xl font-bold mb-2">Editorial Scale</h3>
+<p class="text-sm opacity-90 leading-relaxed">Hierarchy is defined through background shifts and subtle tonal transitions rather than heavy borders.</p>
+</div>
+</div>
+<!-- Scale List -->
+<div class="md:col-span-12 bg-surface-container-lowest rounded-xl overflow-hidden">
+<div class="p-8 border-b border-outline-variant/20">
+<h2 class="text-xl font-bold tracking-tight">Heading Scale</h2>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+<h2 class="text-[2.25rem] font-bold tracking-tight text-on-surface">H2 Secondary Display</h2>
+<span class="text-xs font-mono text-outline">36px / 1.2 / -0.01em</span>
+</div>
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+<h3 class="text-[1.875rem] font-bold tracking-tight text-on-surface">H3 Tertiary Display</h3>
+<span class="text-xs font-mono text-outline">30px / 1.3 / -0.01em</span>
+</div>
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+<h4 class="text-[1.5rem] font-semibold tracking-tight text-on-surface">H4 Small Display</h4>
+<span class="text-xs font-mono text-outline">24px / 1.4 / 0</span>
+</div>
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+<h5 class="text-[1.25rem] font-semibold tracking-tight text-on-surface">H5 Sub-header Title</h5>
+<span class="text-xs font-mono text-outline">20px / 1.5 / 0</span>
+</div>
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors">
+<h6 class="text-[1.125rem] font-semibold tracking-tight text-on-surface">H6 Subtle Accent Header</h6>
+<span class="text-xs font-mono text-outline">18px / 1.6 / 0</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Body & Mono Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+<!-- Body Text -->
+<div class="space-y-6">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">subject</span>
+                        Body &amp; Paragraphs
+                    </h3>
+<div class="bg-surface-container-lowest p-8 rounded-xl space-y-6">
+<div>
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest mb-3 block">Body Large (16px)</span>
+<p class="text-base text-on-surface leading-relaxed">
+                                Lucid leverages white space as a structural element. Paragraphs should maintain a line-height of 1.6 to ensure readability in data-heavy environments or long-form documentation.
+                            </p>
+</div>
+<div>
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest mb-3 block">Body Medium (14px)</span>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                Secondary body text uses on-surface-variant to create a natural hierarchy. This is the workhorse of our dashboard for metadata and supporting content.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Mono & Semantic -->
+<div class="space-y-6">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">code</span>
+                        Monospace &amp; Semantic
+                    </h3>
+<div class="bg-surface-container-lowest p-8 rounded-xl space-y-6">
+<div>
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest mb-3 block">Code Block</span>
+<pre class="bg-surface-container-low p-4 rounded-lg font-mono text-sm text-on-secondary-container overflow-x-auto"><code>const lucid = { 
+  type: 'Typography',
+  font: 'Inter',
+  scale: 'Editorial'
+};</code></pre>
+</div>
+<div class="flex flex-wrap gap-3 pt-2">
+<span class="bg-primary-container/10 text-primary-container px-3 py-1 rounded text-xs font-mono font-medium">v1.0.4-stable</span>
+<span class="bg-error-container/20 text-error px-3 py-1 rounded text-xs font-mono font-medium">error: missing_token</span>
+<span class="bg-secondary-container/20 text-secondary px-3 py-1 rounded text-xs font-mono font-medium">0.342ms</span>
+</div>
+</div>
+</div>
+</section>
+<!-- List Styles Section -->
+<section class="space-y-6 mb-16">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">format_list_bulleted</span>
+                    List Collections
+                </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Unordered -->
+<div class="bg-surface-container-lowest p-8 rounded-xl">
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest mb-4 block">Unordered List</span>
+<ul class="space-y-4">
+<li class="flex items-start gap-3 text-on-surface leading-relaxed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+                                Components must be responsive and accessible by default.
+                            </li>
+<li class="flex items-start gap-3 text-on-surface leading-relaxed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+                                Depth is achieved through tonal layering, not shadows.
+                            </li>
+<li class="flex items-start gap-3 text-on-surface leading-relaxed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+                                Colors follow the Material Design 3 naming conventions.
+                            </li>
+</ul>
+</div>
+<!-- Ordered -->
+<div class="bg-surface-container-lowest p-8 rounded-xl">
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest mb-4 block">Ordered List</span>
+<ol class="space-y-4">
+<li class="flex items-start gap-4 text-on-surface leading-relaxed">
+<span class="text-xs font-bold text-primary bg-primary/10 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">1</span>
+                                Define the semantic layer of your application first.
+                            </li>
+<li class="flex items-start gap-4 text-on-surface leading-relaxed">
+<span class="text-xs font-bold text-primary bg-primary/10 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">2</span>
+                                Apply typography scale consistently across views.
+                            </li>
+<li class="flex items-start gap-4 text-on-surface leading-relaxed">
+<span class="text-xs font-bold text-primary bg-primary/10 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">3</span>
+                                Review contrast ratios for accessibility compliance.
+                            </li>
+</ol>
+</div>
+</div>
+</section>
+<!-- Decorative Visual Break -->
+<section class="h-64 relative rounded-2xl overflow-hidden mb-16">
+<div class="absolute inset-0 bg-gradient-to-br from-primary to-indigo-900"></div>
+<img alt="abstract gradient" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50" data-alt="abstract smooth mesh gradient flowing from deep violet to cobalt blue with subtle digital grain texture and soft highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH_87A25h-L-ffUGp3Qzk2Py1wzCTsXtL6UqOGDPnXTh2u9Q94tscftryaqL-5BSbxydmXoqb_-XiQvpYy3nFSLpZGg5N63MMMwCQUIM2wfjvlmX2g_WtyjzK3qOC3E8WQ70ZA264aKulTFKY5LpxASU1dA3_N6sNlRRAJXkOOTX27z_xwxUcIqIICGnRoqtTyYI9_yvSeR6UT0_yhrVGIfHWbBhmC5yVddiEY2xOoUD7An3CMcpGntGte8KAFNvKp5vG2mm93fr0"/>
+<div class="absolute inset-0 flex flex-col justify-center items-center text-center p-8">
+<h2 class="text-3xl font-bold text-white tracking-tighter mb-2">Design is intelligence made visible.</h2>
+<p class="text-white/70 font-mono text-sm">— Alina Wheeler</p>
+</div>
+</section>
+<!-- Final Documentation Note -->
+<footer class="border-t border-outline-variant/30 pt-8 flex justify-between items-center text-on-surface-variant">
+<p class="text-sm">Last updated: May 24, 2024</p>
+<div class="flex gap-4">
+<button class="text-sm font-semibold text-primary hover:underline">Download Spec PDF</button>
+<button class="text-sm font-semibold text-primary hover:underline">Copy CSS Tokens</button>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

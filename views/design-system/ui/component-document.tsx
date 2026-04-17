@@ -9,40 +9,40 @@ type ComponentDocumentHeaderProps = {
 };
 
 const ComponentDocument = ({ children }: { children: ReactNode }) => {
-    return <div className="space-y-6">{children}</div>;
+    return <div className="mx-auto max-w-5xl space-y-6">{children}</div>;
 };
 
 const ComponentDocumentHeader = ({ category, component, title, description, filePath }: ComponentDocumentHeaderProps) => {
     return (
-        <div className="rounded-2xl border bg-white p-6">
-            <div className="text-muted-foreground text-xs font-medium tracking-wide">{`${category}/${component}`}</div>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h1>
-            <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{filePath}</p>
-            <div className="text-muted-foreground mt-3 text-sm leading-relaxed">{description}</div>
+        <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
+            <div className="text-xs font-semibold tracking-[0.12em] text-indigo-600 uppercase">{`${category}/${component}`}</div>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900">{title}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-slate-500">{filePath}</p>
+            <div className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">{description}</div>
         </div>
     );
 };
 
 const ComponentDocumentPlayground = ({ children }: { children: ReactNode }) => {
     return (
-        <div className="rounded-2xl border bg-white">
-            <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
-                <div className="text-sm font-semibold">Playground</div>
-                <div className="text-muted-foreground text-xs">interactive</div>
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3">
+                <div className="text-sm font-semibold text-slate-900">Playground</div>
+                <div className="text-xs font-medium text-slate-500">interactive</div>
             </div>
-            <div className="p-4">{children}</div>
+            <div className="p-5">{children}</div>
         </div>
     );
 };
 
 const ComponentDocumentUsage = ({ children }: { children: ReactNode }) => {
     return (
-        <div className="rounded-2xl border bg-white">
-            <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
-                <div className="text-sm font-semibold">Usage</div>
-                <div className="text-muted-foreground text-xs">guides</div>
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3">
+                <div className="text-sm font-semibold text-slate-900">Usage</div>
+                <div className="text-xs font-medium text-slate-500">guides</div>
             </div>
-            <div className="p-4">{children}</div>
+            <div className="p-5">{children}</div>
         </div>
     );
 };
@@ -57,13 +57,13 @@ const ComponentDocumentSource = ({ source }: { source?: string }) => {
         );
 
     return (
-        <div className="rounded-2xl border bg-white">
-            <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
-                <div className="text-sm font-semibold">Source</div>
-                <div className="text-muted-foreground text-xs">읽기 전용</div>
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3">
+                <div className="text-sm font-semibold text-slate-900">Source</div>
+                <div className="text-xs font-medium text-slate-500">read-only</div>
             </div>
-            <pre className="overflow-auto p-4 text-xs leading-relaxed">
-                <code>{source}</code>
+            <pre className="max-h-[480px] overflow-auto bg-slate-950 p-5 text-xs leading-relaxed text-slate-100">
+                <code className="font-mono">{source}</code>
             </pre>
         </div>
     );

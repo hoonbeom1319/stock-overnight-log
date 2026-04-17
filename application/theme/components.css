@@ -1,13 +1,13 @@
 @layer components {
     .hb-focus-ring-primary {
-        @apply focus-visible:ring-primary/40 focus-visible:ring-2 focus-visible:outline-none;
+        @apply focus-visible:ring-primary focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
     }
 
     .bg-gradient-primary {
-        @apply from-primary to-primary-500 bg-gradient-to-r;
+        @apply from-primary to-primary-container bg-linear-to-br;
     }
 
     .bg-gradient-secondary {
-        @apply from-secondary to-secondary-500 bg-gradient-to-r;
+        @apply from-secondary to-secondary-600 bg-linear-to-br;
     }
 }
